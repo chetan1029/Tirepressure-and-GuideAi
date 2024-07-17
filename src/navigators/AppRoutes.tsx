@@ -8,9 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
 import ModalScreen from '../screens/ModalScreen';
 import {useOfflineStore} from '../store/offline-store';
-import SharedModalScreen from '../screens/SharedModalScreen';
 import {Text} from 'react-native';
-import LoginScreen from '../screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,32 +26,16 @@ const AppRoutes = ({isUserLogin}: any) => {
       <GestureHandlerRootView style={{flex: 1}}>
         <NavigationContainer fallback={<Text>Loading...</Text>}>
           <Stack.Navigator>
-            {!isUserLogin ? (
-              <Stack.Group
-                screenOptions={{
-                  headerMode: 'screen',
-                  headerShown: false,
-                }}>
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-              </Stack.Group>
-            ) : (
-              <Stack.Group
-                screenOptions={{
-                  headerMode: 'screen',
-                  headerShown: false,
-                  presentation: 'transparentModal',
-                  ...TransitionPresets.ModalPresentationIOS,
-                }}>
-                <Stack.Screen
-                  name="Tab"
-                  component={TabNavigator}></Stack.Screen>
-                <Stack.Screen name="ModalScreen" component={ModalScreen} />
-                <Stack.Screen
-                  name="SharedModalScreen"
-                  component={SharedModalScreen}
-                />
-              </Stack.Group>
-            )}
+            <Stack.Group
+              screenOptions={{
+                headerMode: 'screen',
+                headerShown: false,
+                presentation: 'transparentModal',
+                ...TransitionPresets.ModalPresentationIOS,
+              }}>
+              <Stack.Screen name="Tab" component={TabNavigator}></Stack.Screen>
+              <Stack.Screen name="ModalScreen" component={ModalScreen} />
+            </Stack.Group>
           </Stack.Navigator>
         </NavigationContainer>
         <Toast />

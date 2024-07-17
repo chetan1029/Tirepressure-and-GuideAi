@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  Text,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useStore} from '../store/store';
@@ -18,6 +19,8 @@ import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import AutoOptionFlatList from '../components/AutoOptionFlatList';
+import {FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import BannerAds from '../components/BannerAds';
 
 const AutoTiresListScreen = ({route, navigation}: any) => {
   // State
@@ -66,7 +69,7 @@ const AutoTiresListScreen = ({route, navigation}: any) => {
 
       {/* App Header */}
       <HeaderBar
-        title={t('selectAutoYear')}
+        title={year + ' ' + makeName + ' ' + modelName}
         themeColor={themeColor}
         backButton={() => {
           navigation.navigate('AutoYearListScreen', {
@@ -77,6 +80,9 @@ const AutoTiresListScreen = ({route, navigation}: any) => {
           });
         }}
       />
+
+      {/* Banner Ads */}
+      <BannerAds />
 
       {loading ? (
         <LoadingCard title="" />
@@ -113,5 +119,10 @@ const styles = StyleSheet.create({
   },
   LottieStyle: {
     height: 500,
+  },
+  TextTitle: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_20,
+    marginHorizontal: SPACING.space_20,
   },
 });

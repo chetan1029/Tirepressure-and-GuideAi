@@ -19,6 +19,7 @@ import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import AutoOptionFlatList from '../components/AutoOptionFlatList';
 import SearchBar from '../components/SearchBar';
+import BannerAds from '../components/BannerAds';
 
 const AutoMakeListScreen = ({navigation}: any) => {
   // State
@@ -108,6 +109,9 @@ const AutoMakeListScreen = ({navigation}: any) => {
         themeColor={themeColor}
         placeholder={t('searchAutoMake')}
       />
+
+      {/* Banner Ads */}
+      <BannerAds />
 
       {loading ? (
         <LoadingCard title="" />

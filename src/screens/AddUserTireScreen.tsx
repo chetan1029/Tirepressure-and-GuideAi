@@ -21,6 +21,7 @@ import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import AutoOptionFlatList from '../components/AutoOptionFlatList';
 import {BORDERRADIUS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import BannerAds from '../components/BannerAds';
 
 const AddUserTireScreen = ({navigation}: any) => {
   // State
@@ -121,6 +122,8 @@ const AddUserTireScreen = ({navigation}: any) => {
           </Text>
         </View>
       </TouchableOpacity>
+      {/* Banner Ads */}
+      <BannerAds />
     </View>
   );
 };

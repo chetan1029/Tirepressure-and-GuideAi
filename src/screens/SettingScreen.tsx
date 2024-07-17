@@ -22,8 +22,6 @@ import 'intl-pluralrules';
 import {useTranslation} from 'react-i18next';
 import i18n from '../utils/i18n';
 import auth from '@react-native-firebase/auth';
-import {AppleButton} from '@invertase/react-native-apple-authentication';
-import {linkWithApple} from '../utils/credential';
 
 // Components
 import HeaderBar from '../components/HeaderBar';
@@ -41,9 +39,7 @@ const SettingScreen = ({route, navigation}: any) => {
   const themeColor = useOfflineStore((state: any) => state.themeColor);
   const setUserDetail = useStore((state: any) => state.setUserDetail);
   const UserDetail = useStore((state: any) => state.UserDetail);
-  const updateUserNameOnSharedWishList = useStore(
-    (state: any) => state.updateUserNameOnSharedWishList,
-  );
+
   // Const
   const {t} = useTranslation();
 

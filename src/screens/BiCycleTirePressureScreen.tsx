@@ -26,10 +26,11 @@ import {
   SPACING,
 } from '../theme/theme';
 import Feather from 'react-native-vector-icons/Feather';
-import {convertKgToLbs, convertMmToInch} from '../utils/common';
+import {amazonDealLink, convertKgToLbs, convertMmToInch} from '../utils/common';
 import BiCycleTirePressureCard from '../components/BiCycleTireCard';
 import {useStore} from '../store/store';
 import {rideConditionData} from '../utils/mapping';
+import AmazonTireDeal from '../components/AmazonTireDeal';
 
 const BiCycleTirePressureScreen = ({route, navigation}: any) => {
   // Store
@@ -101,7 +102,6 @@ const BiCycleTirePressureScreen = ({route, navigation}: any) => {
     weightUnit: boolean,
     tubelessTire: boolean = false,
   ) => {
-    console.log(weight, width, isRear, condition, weightUnit, tubelessTire);
     const widthInch = Number(convertMmToInch(width));
     let weightLbs = weight;
     if (!weightUnit) {
@@ -124,15 +124,6 @@ const BiCycleTirePressureScreen = ({route, navigation}: any) => {
       default:
         conditionFactor = 1;
     }
-
-    console.log(
-      weightLbs,
-      widthInch,
-      isRear,
-      condition,
-      weightUnit,
-      tubelessTire,
-    );
 
     let pressure =
       ((weightLbs * weightDistributionFactor) / widthInch) * conditionFactor;
@@ -447,6 +438,24 @@ const BiCycleTirePressureScreen = ({route, navigation}: any) => {
             t={t}
             userDetail={UserDetail}
             addBicycleUserTire={addBicycleUserTire}
+          />
+          <AmazonTireDeal
+            link={amazonDealLink}
+            title={
+              bicyclePressure.front_tire_size +
+              'mm / ' +
+              bicyclePressure.rear_tire_size +
+              'mm Bicycle Tires'
+            }
+            subtitle={
+              'Find ' +
+              bicyclePressure?.front_tire_size +
+              'mm / ' +
+              bicyclePressure?.rear_tire_size +
+              'mm tires for all vehicles. Great prices and fast shipping on Amazon'
+            }
+            icon={'logo-amazon'}
+            themeColor={themeColor}
           />
         </View>
       ) : (

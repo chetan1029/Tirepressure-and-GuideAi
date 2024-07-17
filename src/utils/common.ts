@@ -65,4 +65,6 @@ const findRideConditionLabel = (value: string): string | undefined => {
   return condition ? condition.label : undefined;
 };
 
-export {showToast, isConnectedToNetwork, openLink, pressureConverter, convertMmToInch, convertKgToLbs, findRideConditionLabel};
+const amazonDealLink = "https://amzn.to/4cXPRNd"
+
+export {showToast, isConnectedToNetwork, openLink, pressureConverter, convertMmToInch, convertKgToLbs, findRideConditionLabel, amazonDealLink};

@@ -1,4 +1,7 @@
 {
   "name": "tire_pressure",
-  "displayName": "Tire Pressure"
+  "displayName": "Tire Pressure",
+  "react-native-google-mobile-ads": {
+    "ios_app_id": "ca-app-pub-2440162144079254~2200538065"
+  }
 }

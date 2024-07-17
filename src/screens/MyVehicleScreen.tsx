@@ -21,6 +21,7 @@ import HeaderBar from '../components/HeaderBar';
 import {showToast} from '../utils/common';
 import LoadingCard from '../components/LoadingCard';
 import TirePressureFlatList from '../components/TirePressureFlatList';
+import BannerAds from '../components/BannerAds';
 
 const MyVehicleScreen = ({route, navigation}: any) => {
   // State
@@ -70,6 +71,9 @@ const MyVehicleScreen = ({route, navigation}: any) => {
 
       {/* App Header */}
       <HeaderBar title={t('myGarage')} themeColor={themeColor} />
+
+      {/* Banner Ads */}
+      <BannerAds />
 
       {loading ? (
         <LoadingCard title="" />

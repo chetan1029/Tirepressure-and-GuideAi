@@ -59,11 +59,13 @@ const en = {
     noSearchInHistory: 'No search in history',
     // Tire Deals
     tireDeals: 'Tire Deals',
-    tiresForSaleOnAmazon: 'Tires For Sale on Amazon',
-    pressureSaleOnAmazon: 'Pressure Tools Deals on Amazon',
+    tiresForSaleTitle: 'Tires For Sale',
+    tiresForSaleSubTitle: 'Find top-brand tires for all vehicles. Great prices and fast shipping on Amazon.',
+    pressureToolTitle: 'Pressure Tools Deals on Amazon',
+    pressureToolSubTitle: 'Pressure Tools Deals on Amazon',
     tireRepairOnAmazon: 'Tire Repair Kit Deals on Amazon',
     tireInflatorOnAmazon: 'Tire Inflator Deals on Amazon',
-    tirePressureMonitorOnAmazon: 'Tire Pressure Monitor Deals on Amazon',
+    tirePressureMonitorOnAmazon: 'Tire Pressure on Amazon',
     // Add to Wishlist
     addToWishList: 'Add to Wishlist',
     addNew: 'Add New...',

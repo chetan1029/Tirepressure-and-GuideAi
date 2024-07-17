@@ -19,6 +19,7 @@ import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import AutoOptionFlatList from '../components/AutoOptionFlatList';
 import SearchBar from '../components/SearchBar';
+import BannerAds from '../components/BannerAds';
 
 const AutoModelListScreen = ({route, navigation}: any) => {
   // State
@@ -115,8 +116,11 @@ const AutoModelListScreen = ({route, navigation}: any) => {
         placeholder={t('searchAutoModel')}
       />
 
+      {/* Banner Ads */}
+      <BannerAds />
+
       {loading ? (
-        <LoadingCard />
+        <LoadingCard title="" />
       ) : (
         <AutoOptionFlatList
           ListRef={ListRef}

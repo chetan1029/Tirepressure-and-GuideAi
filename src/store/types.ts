@@ -51,3 +51,12 @@ export interface GuideAiItem{
     response: any,
     type: string,
 }
+
+export interface TireDealItem{
+    id: string,
+    title: string,
+    subtitle: string,
+    icon: string,
+    type: string,
+    link: string
+}

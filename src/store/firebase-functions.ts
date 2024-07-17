@@ -1,5 +1,5 @@
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { UserTiresItem, AlertMessageDetailItem, AutoMakeItem, AutoModelItem, AutoYearItem, GuideAiItem } from './types';
+import { UserTiresItem, AlertMessageDetailItem, AutoMakeItem, AutoModelItem, AutoYearItem, GuideAiItem, TireDealItem } from './types';
 
 const fetchUserTiresFromFirebase = async(userId: string) => {
     let userTiresItem: any[] = [];
@@ -174,6 +174,24 @@ const fetchGuideAiItemFromFirebase = async(guideId: string) => {
     }
 }
 
+// fetch Tire Deal
+const fetchTireDealItemsFromFirebase = async() => {
+    let tireDealItem: TireDealItem[] = [];
+    await firestore().collection('affiliate').get().then((autoYearSnapshot) => {
+        if (!autoYearSnapshot.empty) {
+            tireDealItem = autoYearSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                subtitle: doc.data().subtitle,
+                icon: doc.data().icon,
+                type: doc.data().type,
+                link: doc.data().link,
+            }));
+        }
+    });
+    return tireDealItem;
+}
+
 
 export { 
     fetchUserTiresFromFirebase, 
@@ -186,5 +204,6 @@ export {
     fetchAutoYearFromFirebase,
     fetchGuideAiFromFirebase,
     searchViaGuideAiFromFirebase,
-    fetchGuideAiItemFromFirebase
+    fetchGuideAiItemFromFirebase,
+    fetchTireDealItemsFromFirebase
 }

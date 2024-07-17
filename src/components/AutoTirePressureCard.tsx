@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   CardLinearGradient: {
     padding: SPACING.space_20,
     borderRadius: BORDERRADIUS.radius_10,
+    marginBottom: SPACING.space_10,
   },
   CardInfoContainer: {
     flexDirection: 'column',

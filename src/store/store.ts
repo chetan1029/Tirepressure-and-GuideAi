@@ -11,8 +11,9 @@ import {
   fetchGuideAiFromFirebase,
   searchViaGuideAiFromFirebase,
   fetchGuideAiItemFromFirebase,
+  fetchTireDealItemsFromFirebase,
 } from "./firebase-functions";
-import { AlertMessageDetailItem, SettingsType, UserType, UserTiresItem, AutoMakeItem, AutoModelItem, AutoYearItem, GuideAiItem } from './types';
+import { AlertMessageDetailItem, SettingsType, UserType, UserTiresItem, AutoMakeItem, AutoModelItem, AutoYearItem, GuideAiItem, TireDealItem } from './types';
 import { isConnectedToNetwork, showToast } from '../utils/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,6 +27,7 @@ interface StoreState {
   GuideAiSearchItem: GuideAiItem | null;
   AlertMessageDetails: { title: string, message: string, action: any};
   Settings: SettingsType;
+  TireDealItems: TireDealItem[];
   setUserDetail: (user: any) => void;
   fetchAutoMake: () => Promise<void>;
   fetchAutoModel: (makeId: string) => Promise<void>;
@@ -39,6 +41,7 @@ interface StoreState {
   addBicycleUserTire: (frontTirePressure: number, frontTireSize: number, rearTirePressure: number, rearTireSize: number, riderWeight: number, rideCondition: string, weightUnit: string, tubelessTire: boolean, user:any) => Promise<void>;
   updateSettings: (settings: SettingsType) => Promise<void>;
   deleteUserTiresByUser: (user: any) => Promise<void>;
+  fetchTireDealItems: () => Promise<void>;
 }
 
 
@@ -58,6 +61,7 @@ export const useStore = create<StoreState>(
       },
       AlertMessageDetails: {title: '', message: '', action: ''},
       Settings: {themeMode: "Automatic", language: "English"},
+      TireDealItems:[],
       setUserDetail: async(user: any) => {
         set({UserDetail: user})
       },
@@ -178,6 +182,14 @@ export const useStore = create<StoreState>(
           await deleteUserTiresByUserInFirebase(user.uid);
         } catch (error) {
           console.error("Error deleting user tire data by user", error);
+        }
+      },
+      fetchTireDealItems: async () => {
+        try {
+          const tireDealItems = await fetchTireDealItemsFromFirebase();
+          set({TireDealItems: tireDealItems});
+        } catch (error) {
+          console.error("Error fetching guide AI data", error);
         }
       } 
     }),

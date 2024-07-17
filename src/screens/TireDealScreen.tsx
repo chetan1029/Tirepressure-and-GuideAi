@@ -1,12 +1,5 @@
-import {
-  Linking,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useEffect} from 'react';
+import {FlatList, StatusBar, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import {useOfflineStore} from '../store/offline-store';
 import 'intl-pluralrules';
 import {useTranslation} from 'react-i18next';
@@ -14,15 +7,37 @@ import i18n from '../utils/i18n';
 
 // Components
 import HeaderBar from '../components/HeaderBar';
-import {BORDERRADIUS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AmazonTireDeal from '../components/AmazonTireDeal';
+import {useStore} from '../store/store';
+import EmptyListAnimation from '../components/EmptyListAnimation';
+import {SPACING} from '../theme/theme';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 const TireDealScreen = ({navigation}: any) => {
+  // state
+  const [loading, setLoading] = useState(false);
   const themeColor = useOfflineStore((state: any) => state.themeColor);
   const Settings = useOfflineStore((state: any) => state.Settings);
 
+  //Store
+  const TireDealItems = useStore((state: any) => state.TireDealItems);
+  const fetchTireDealItems = useStore((state: any) => state.fetchTireDealItems);
+
   // Const
   const {t} = useTranslation();
+  const ListRef: any = useRef<FlatList>();
+  const tabBarHeight = useBottomTabBarHeight();
+
+  // Use effect to fetch wish list
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await fetchTireDealItems();
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [fetchTireDealItems]);
 
   // use effect to use language
   useEffect(() => {
@@ -39,115 +54,29 @@ const TireDealScreen = ({navigation}: any) => {
       {/* App Header */}
       <HeaderBar title={t('tireDeals')} themeColor={themeColor} />
 
-      <TouchableOpacity
-        style={[
-          styles.InputContainerComponent,
-          {backgroundColor: themeColor.priamryDarkBg},
-        ]}
-        onPress={() => {
-          Linking.openURL('https://amzn.to/4cXPRNd');
-        }}>
-        <View style={styles.titleContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name="logo-amazon"
-              size={34}
-              color={themeColor.secondaryText}
+      <FlatList
+        ref={ListRef}
+        horizontal={false}
+        ListEmptyComponent={<EmptyListAnimation title={t('noResultFound')} />}
+        showsVerticalScrollIndicator={false}
+        data={TireDealItems}
+        contentContainerStyle={styles.FlatListContainer}
+        keyExtractor={(item, index) =>
+          item.id ? item.id.toString() : index.toString()
+        }
+        renderItem={({item}) => {
+          return (
+            <AmazonTireDeal
+              link={item.link}
+              title={item.title}
+              subtitle={item.subtitle}
+              icon={item.icon}
+              themeColor={themeColor}
             />
-          </View>
-          <Text style={[styles.title, {color: themeColor.secondaryText}]}>
-            {t('tiresForSaleOnAmazon')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.InputContainerComponent,
-          {backgroundColor: themeColor.priamryDarkBg},
-        ]}
-        onPress={() => {
-          Linking.openURL('https://amzn.to/3WmCWPi');
-        }}>
-        <View style={styles.titleContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name="logo-amazon"
-              size={34}
-              color={themeColor.secondaryText}
-            />
-          </View>
-          <Text style={[styles.title, {color: themeColor.secondaryText}]}>
-            {t('pressureSaleOnAmazon')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.InputContainerComponent,
-          {backgroundColor: themeColor.priamryDarkBg},
-        ]}
-        onPress={() => {
-          Linking.openURL('https://amzn.to/3WqHEvK');
-        }}>
-        <View style={styles.titleContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name="logo-amazon"
-              size={34}
-              color={themeColor.secondaryText}
-            />
-          </View>
-          <Text style={[styles.title, {color: themeColor.secondaryText}]}>
-            {t('tireRepairOnAmazon')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.InputContainerComponent,
-          {backgroundColor: themeColor.priamryDarkBg},
-        ]}
-        onPress={() => {
-          Linking.openURL('https://amzn.to/3S7SILn');
-        }}>
-        <View style={styles.titleContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name="logo-amazon"
-              size={34}
-              color={themeColor.secondaryText}
-            />
-          </View>
-          <Text style={[styles.title, {color: themeColor.secondaryText}]}>
-            {t('tireInflatorOnAmazon')}
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.InputContainerComponent,
-          {backgroundColor: themeColor.priamryDarkBg},
-        ]}
-        onPress={() => {
-          Linking.openURL('https://amzn.to/464LTjv');
-        }}>
-        <View style={styles.titleContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name="logo-amazon"
-              size={34}
-              color={themeColor.secondaryText}
-            />
-          </View>
-          <Text style={[styles.title, {color: themeColor.secondaryText}]}>
-            {t('tirePressureMonitorOnAmazon')}
-          </Text>
-        </View>
-      </TouchableOpacity>
+          );
+        }}
+        style={{marginBottom: tabBarHeight * 2.2}}
+      />
     </View>
   );
 };
@@ -158,30 +87,10 @@ const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
   },
-  InputContainerComponent: {
-    flexDirection: 'row',
-    marginHorizontal: SPACING.space_20,
-    marginBottom: SPACING.space_8,
-    borderRadius: BORDERRADIUS.radius_10,
-    paddingHorizontal: SPACING.space_20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: SPACING.space_20 * 4,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    marginRight: SPACING.space_15,
-  },
-  icon: {
-    marginRight: SPACING.space_15,
+  FlatListContainer: {
+    gap: SPACING.space_10,
     paddingVertical: SPACING.space_15,
-  },
-  title: {
-    fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_14,
-    maxWidth: '100%',
+    paddingHorizontal: SPACING.space_20,
+    flexGrow: 1,
   },
 });

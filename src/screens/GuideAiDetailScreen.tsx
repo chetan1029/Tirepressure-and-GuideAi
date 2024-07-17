@@ -18,6 +18,8 @@ import firestore from '@react-native-firebase/firestore';
 import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import GuideAiDetailCard from '../components/GuideAiDetailCard';
+import BannerAds from '../components/BannerAds';
+import {CommonActions} from '@react-navigation/native';
 
 const GuideAiDetailScreen = ({route, navigation}: any) => {
   // State
@@ -89,7 +91,8 @@ const GuideAiDetailScreen = ({route, navigation}: any) => {
           navigation.navigate('GuideAiScreen');
         }}
       />
-
+      {/* Banner Ads */}
+      <BannerAds />
       {loading ? (
         <LoadingCard title={item?.prompt} />
       ) : (

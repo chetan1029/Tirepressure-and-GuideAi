@@ -1,9 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import {BORDERRADIUS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
-import {showToast, pressureConverter} from '../utils/common';
+import {showToast, pressureConverter, amazonDealLink} from '../utils/common';
 import {CommonActions} from '@react-navigation/native';
 import {useOfflineStore} from '../store/offline-store';
+import AmazonTireDeal from './AmazonTireDeal';
 
 interface AutoOptionTireCardProps {
   themeColor: any;
@@ -26,6 +27,7 @@ const AutoOptionTireCard: React.FC<AutoOptionTireCardProps> = ({
 }) => {
   const Settings = useOfflineStore((state: any) => state.Settings);
   const pressureUnit = Settings.pressureUnit;
+  const autoDetail = getNavigationParams(item);
   const handleAddAutoTire = async () => {
     Alert.alert(t('addAutoToGarage'), t('wannaAddAutoToGarage'), [
       {
@@ -59,41 +61,61 @@ const AutoOptionTireCard: React.FC<AutoOptionTireCardProps> = ({
     ]);
   };
   return (
-    <TouchableOpacity
-      onPress={handleAddAutoTire}
-      style={[
-        styles.CardLinearGradient,
-        {backgroundColor: themeColor.priamryDarkBg},
-      ]}>
-      <View style={styles.CardInfoContainer}>
-        <View style={styles.CardSubInfoContainer}>
-          <Text
-            style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
-            Rear Tire Pressure
-          </Text>
-          <Text style={[styles.TextTitle, {color: themeColor.secondaryText}]}>
-            {pressureConverter(item.rear_tire_pressure, pressureUnit)}
-          </Text>
-          <Text
-            style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
-            {item.rear_tire_size}
-          </Text>
+    <>
+      <TouchableOpacity
+        onPress={handleAddAutoTire}
+        style={[
+          styles.CardLinearGradient,
+          {backgroundColor: themeColor.priamryDarkBg},
+        ]}>
+        <View style={styles.CardInfoContainer}>
+          <View style={styles.CardSubInfoContainer}>
+            <Text
+              style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
+              Rear Tire Pressure
+            </Text>
+            <Text style={[styles.TextTitle, {color: themeColor.secondaryText}]}>
+              {pressureConverter(item.rear_tire_pressure, pressureUnit)}
+            </Text>
+            <Text
+              style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
+              {item.rear_tire_size}
+            </Text>
+          </View>
+          <View style={styles.CardSubInfoContainer}>
+            <Text
+              style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
+              Front Tire Pressure
+            </Text>
+            <Text style={[styles.TextTitle, {color: themeColor.secondaryText}]}>
+              {pressureConverter(item.front_tire_pressure, pressureUnit)}
+            </Text>
+            <Text
+              style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
+              {item.front_tire_size}
+            </Text>
+          </View>
         </View>
-        <View style={styles.CardSubInfoContainer}>
-          <Text
-            style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
-            Front Tire Pressure
-          </Text>
-          <Text style={[styles.TextTitle, {color: themeColor.secondaryText}]}>
-            {pressureConverter(item.front_tire_pressure, pressureUnit)}
-          </Text>
-          <Text
-            style={[styles.TextSubTitle, {color: themeColor.secondaryText}]}>
-            {item.front_tire_size}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <AmazonTireDeal
+        link={amazonDealLink}
+        title={
+          autoDetail?.year +
+          ' ' +
+          autoDetail?.makeName +
+          ' ' +
+          autoDetail?.modelName +
+          ' Tires'
+        }
+        subtitle={
+          'Find ' +
+          autoDetail?.makeName +
+          ' tires for all vehicles. Great prices and fast shipping on Amazon'
+        }
+        icon={'logo-amazon'}
+        themeColor={themeColor}
+      />
+    </>
   );
 };
 
@@ -103,6 +125,7 @@ const styles = StyleSheet.create({
   CardLinearGradient: {
     padding: SPACING.space_20,
     borderRadius: BORDERRADIUS.radius_8,
+    marginBottom: SPACING.space_10,
   },
   CardInfoContainer: {
     flexDirection: 'row',

@@ -19,6 +19,7 @@ import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import AutoOptionFlatList from '../components/AutoOptionFlatList';
 import SearchBar from '../components/SearchBar';
+import BannerAds from '../components/BannerAds';
 
 const AutoYearListScreen = ({route, navigation}: any) => {
   // State
@@ -105,7 +106,10 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         title={t('selectAutoYear')}
         themeColor={themeColor}
         backButton={() => {
-          navigation.navigate('AutoModelListScreen', {makeId: makeId});
+          navigation.navigate('AutoModelListScreen', {
+            makeId: makeId,
+            makeName: makeName,
+          });
         }}
       />
 
@@ -119,8 +123,11 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         placeholder={t('searchAutoYear')}
       />
 
+      {/* Banner Ads */}
+      <BannerAds />
+
       {loading ? (
-        <LoadingCard />
+        <LoadingCard title="" />
       ) : (
         <AutoOptionFlatList
           ListRef={ListRef}
