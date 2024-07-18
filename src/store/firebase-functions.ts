@@ -20,10 +20,10 @@ const deleteUserTiresInFirebase = async(id: string, userId: string) => {
     await firestore().collection('userTires').doc(id).delete();
 }
 
-const addAutoUserTiresInFirebase = async(make: string, model: string, year: string, frontTirePressure: string, frontTireSize: string, rearTirePressure: string, rearTireSize: string, userId: string) => {
+const addAutoUserTiresInFirebase = async(make: string, model: string, year: string, frontTirePressure: string, frontTireSize: string, rearTirePressure: string, rearTireSize: string, type: string, userId: string) => {
     const userTireDocRef = await firestore().collection('userTires').add(
         { 
-            "type": "Auto", 
+            "type": type, 
             "make": make,
             "model": model, 
             "year": year, 
@@ -109,6 +109,49 @@ const fetchAutoYearFromFirebase = async(makeId: string, modelId: string) => {
         }
     });
     return autoYearItem;
+}
+
+// fetch Moto Make
+const fetchMotoMakeFromFirebase = async() => {
+    let motoMakeItem: AutoMakeItem[] = [];
+    await firestore().collection('motoMakes').get().then((autoMakeSnapshot) => {
+        if (!autoMakeSnapshot.empty) {
+            motoMakeItem = autoMakeSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                name: doc.data().name,
+            }));
+        }
+    });
+    return motoMakeItem;
+}
+
+// fetch Moto Model
+const fetchMotoModelFromFirebase = async(makeId: string) => {
+    let motoModelItem: AutoModelItem[] = [];
+    await firestore().collection('motoMakes').doc(makeId).collection("models").get().then((autoModelSnapshot) => {
+        if (!autoModelSnapshot.empty) {
+            motoModelItem = autoModelSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                name: doc.data().name,
+            }));
+        }
+    });
+    return motoModelItem;
+}
+
+// fetch Moto Year
+const fetchMotoYearFromFirebase = async(makeId: string, modelId: string) => {
+    let motoYearItem: AutoYearItem[] = [];
+    await firestore().collection('motoMakes').doc(makeId).collection("models").doc(modelId).collection("years").get().then((autoYearSnapshot) => {
+        if (!autoYearSnapshot.empty) {
+            motoYearItem = autoYearSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                name: doc.data().year,
+                tireSizes: doc.data().tireSizes,
+            }));
+        }
+    });
+    return motoYearItem;
 }
 
 // fetch Guide AI
@@ -202,6 +245,9 @@ export {
     fetchAutoMakeFromFirebase,
     fetchAutoModelFromFirebase,
     fetchAutoYearFromFirebase,
+    fetchMotoMakeFromFirebase,
+    fetchMotoModelFromFirebase,
+    fetchMotoYearFromFirebase,
     fetchGuideAiFromFirebase,
     searchViaGuideAiFromFirebase,
     fetchGuideAiItemFromFirebase,

@@ -86,6 +86,11 @@ const AddUserTireScreen = ({navigation}: any) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('MotoMakeListScreen', {
+            id: '',
+          });
+        }}
         style={[
           styles.InputContainerComponent,
           {backgroundColor: themeColor.priamryDarkBg},

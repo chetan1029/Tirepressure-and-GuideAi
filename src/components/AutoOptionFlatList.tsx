@@ -61,7 +61,7 @@ const AutoOptionFlatList: React.FC<AutoOptionFlatListProps> = ({
             />
           );
         }}
-        style={{marginBottom: tabBarHeight * 2.2}}
+        style={{marginBottom: tabBarHeight * 3}}
       />
     </View>
   );

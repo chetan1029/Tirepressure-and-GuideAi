@@ -12,6 +12,9 @@ import {
   searchViaGuideAiFromFirebase,
   fetchGuideAiItemFromFirebase,
   fetchTireDealItemsFromFirebase,
+  fetchMotoMakeFromFirebase,
+  fetchMotoModelFromFirebase,
+  fetchMotoYearFromFirebase,
 } from "./firebase-functions";
 import { AlertMessageDetailItem, SettingsType, UserType, UserTiresItem, AutoMakeItem, AutoModelItem, AutoYearItem, GuideAiItem, TireDealItem } from './types';
 import { isConnectedToNetwork, showToast } from '../utils/common';
@@ -22,6 +25,9 @@ interface StoreState {
   AutoMake: AutoMakeItem[];
   AutoModel: AutoModelItem[];
   AutoYear: AutoYearItem[];
+  MotoMake: AutoMakeItem[];
+  MotoModel: AutoModelItem[];
+  MotoYear: AutoYearItem[];
   UserTiresItems: UserTiresItem[];
   GuideAiItems: GuideAiItem[];
   GuideAiSearchItem: GuideAiItem | null;
@@ -32,6 +38,9 @@ interface StoreState {
   fetchAutoMake: () => Promise<void>;
   fetchAutoModel: (makeId: string) => Promise<void>;
   fetchAutoYear: (makeId: string, modelId: string) => Promise<void>;
+  fetchMotoMake: () => Promise<void>;
+  fetchMotoModel: (makeId: string) => Promise<void>;
+  fetchMotoYear: (makeId: string, modelId: string) => Promise<void>;
   fetchUserTires: (user: any) => Promise<void>;
   fetchGuideAiItems: (type: string, user: any) => Promise<void>;
   searchViaGuideAi: (prompt: string, type: string, user: any) => Promise<string>;
@@ -51,6 +60,9 @@ export const useStore = create<StoreState>(
       AutoMake: [],
       AutoModel: [],
       AutoYear: [],
+      MotoMake: [],
+      MotoModel: [],
+      MotoYear: [],
       UserTiresItems: [],
       GuideAiItems: [],
       GuideAiSearchItem: {
@@ -85,6 +97,30 @@ export const useStore = create<StoreState>(
         try {
             const autoYear = await fetchAutoYearFromFirebase(makeId, modelId);
             set({AutoYear: autoYear});
+        } catch (error) {
+          console.error("Error fetching year data", error);
+        }
+      },
+      fetchMotoMake: async () => {
+        try {
+            const motoMake = await fetchMotoMakeFromFirebase();
+            set({MotoMake: motoMake});
+        } catch (error) {
+          console.error("Error fetching make data", error);
+        }
+      },
+      fetchMotoModel: async (makeId: string) => {
+        try {
+            const motoModel = await fetchMotoModelFromFirebase(makeId);
+            set({MotoModel: motoModel});
+        } catch (error) {
+          console.error("Error fetching model data", error);
+        }
+      },
+      fetchMotoYear: async (makeId: string, modelId: string) => {
+        try {
+            const motoYear = await fetchMotoYearFromFirebase(makeId, modelId);
+            set({MotoYear: motoYear});
         } catch (error) {
           console.error("Error fetching year data", error);
         }
@@ -137,11 +173,8 @@ export const useStore = create<StoreState>(
         }
       },
       addAutoUserTire: async(make: string, model: string, year: string, frontTirePressure: string, frontTireSize: string, rearTirePressure: string, rearTireSize: string, user:any) => {
-        console.log(make)
-        console.log(model)
-        console.log(year)
         try {
-          await addAutoUserTiresInFirebase(make, model, year, frontTirePressure, frontTireSize, rearTirePressure, rearTireSize, user.uid);
+          await addAutoUserTiresInFirebase(make, model, year, frontTirePressure, frontTireSize, rearTirePressure, rearTireSize, "Auto", user.uid);
 
           // Fetch updated wishlist items from Firebase
           await get().fetchUserTires(user);
@@ -150,7 +183,22 @@ export const useStore = create<StoreState>(
             // TODO: we can show a toast message that
             showToast(`No Internet Connection: we will update data once you are back online`, 'info');
           }else {
-            console.error("Error Updating data:", error);
+            console.error("Error Adding auto user tires:", error);
+          }
+        }
+      },
+      addMotoUserTire: async(make: string, model: string, year: string, frontTirePressure: string, frontTireSize: string, rearTirePressure: string, rearTireSize: string, user:any) => {
+        try {
+          await addAutoUserTiresInFirebase(make, model, year, frontTirePressure, frontTireSize, rearTirePressure, rearTireSize, "Motorcycle", user.uid);
+
+          // Fetch updated wishlist items from Firebase
+          await get().fetchUserTires(user);
+        } catch (error: any) {
+          if (error.message === "No internet connection") {
+            // TODO: we can show a toast message that
+            showToast(`No Internet Connection: we will update data once you are back online`, 'info');
+          }else {
+            console.error("Error Adding motorcycle user tires:", error);
           }
         }
       },
@@ -165,7 +213,7 @@ export const useStore = create<StoreState>(
             // TODO: we can show a toast message that
             showToast(`No Internet Connection: we will update data once you are back online`, 'info');
           }else {
-            console.error("Error Updating data:", error);
+            console.error("Error Adding bicycle user tires:", error);
           }
         }
       },

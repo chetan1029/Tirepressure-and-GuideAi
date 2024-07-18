@@ -6,6 +6,10 @@ import AutoModelListScreen from '../screens/AutoModelListScreen';
 import AutoYearListScreen from '../screens/AutoYearListScreen';
 import AutoTiresListScreen from '../screens/AutoTiresListScreen';
 import BiCycleTirePressureScreen from '../screens/BiCycleTirePressureScreen';
+import MotoMakeListScreen from '../screens/MotoMakeListScreen';
+import MotoModelListScreen from '../screens/MotoModelListScreen';
+import MotoYearListScreen from '../screens/MotoYearListScreen';
+import MotoTiresListScreen from '../screens/MotoTiresListScreen';
 
 const AutoStack = createStackNavigator();
 
@@ -20,6 +24,7 @@ function AutoStackScreen() {
         name="AddUserTireScreen"
         component={AddUserTireScreen}
       />
+      {/* Car, Truck & SUV */}
       <AutoStack.Screen
         name="AutoMakeListScreen"
         component={AutoMakeListScreen}
@@ -36,6 +41,24 @@ function AutoStackScreen() {
         name="AutoTiresListScreen"
         component={AutoTiresListScreen}
       />
+      {/* MotorCycle */}
+      <AutoStack.Screen
+        name="MotoMakeListScreen"
+        component={MotoMakeListScreen}
+      />
+      <AutoStack.Screen
+        name="MotoModelListScreen"
+        component={MotoModelListScreen}
+      />
+      <AutoStack.Screen
+        name="MotoYearListScreen"
+        component={MotoYearListScreen}
+      />
+      <AutoStack.Screen
+        name="MotoTiresListScreen"
+        component={MotoTiresListScreen}
+      />
+      {/* Bicycle */}
       <AutoStack.Screen
         name="BiCycleTirePressureScreen"
         component={BiCycleTirePressureScreen}
