@@ -58,7 +58,7 @@ const AutoTirePressureCard: React.FC<AutoTirePressureCardProps> = ({
             <TouchableOpacity
               style={styles.MoreOptionsContainer}
               onPress={() => {
-                navigation.navigate('SharedModalScreen', {
+                navigation.navigate('MyVehicleModalScreen', {
                   id: id,
                   title: title,
                 });

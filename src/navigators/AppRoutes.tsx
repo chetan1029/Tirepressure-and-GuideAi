@@ -9,6 +9,7 @@ import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
 import ModalScreen from '../screens/ModalScreen';
 import {useOfflineStore} from '../store/offline-store';
 import {Text} from 'react-native';
+import MyVehicleModalScreen from '../screens/MyVehicleModalScreen';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,10 @@ const AppRoutes = ({isUserLogin}: any) => {
               }}>
               <Stack.Screen name="Tab" component={TabNavigator}></Stack.Screen>
               <Stack.Screen name="ModalScreen" component={ModalScreen} />
+              <Stack.Screen
+                name="MyVehicleModalScreen"
+                component={MyVehicleModalScreen}
+              />
             </Stack.Group>
           </Stack.Navigator>
         </NavigationContainer>
