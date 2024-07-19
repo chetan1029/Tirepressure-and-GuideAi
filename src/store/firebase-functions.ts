@@ -163,7 +163,7 @@ const fetchGuideAiFromFirebase = async(type: string, userId: any) => {
     }else{
         query = query.where("type", "==", "general");
     }
-    console.log(type);
+    query = query.orderBy('status.startTime', 'desc')
     try {
         await query.get().then((guideAiSnapshot) => {
             if (!guideAiSnapshot.empty) {
@@ -172,7 +172,9 @@ const fetchGuideAiFromFirebase = async(type: string, userId: any) => {
                     prompt: doc.data().prompt,
                     response: doc.data().response,
                     type: doc.data().type,
-                }));
+                    status: doc.data().status,
+                }))
+                .filter((item) => item.status.state !== "ERROR");
             }
         });
     } catch (error) {

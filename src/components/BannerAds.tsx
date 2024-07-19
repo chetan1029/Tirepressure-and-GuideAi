@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Platform} from 'react-native';
 import {StyleSheet, View} from 'react-native';
 import {
@@ -8,26 +8,54 @@ import {
 } from 'react-native-google-mobile-ads';
 import {SPACING} from '../theme/theme';
 
-const BannerAds = () => {
+interface BannerAdsProps {
+  type?: string;
+}
+
+const BannerAds: React.FC<BannerAdsProps> = ({type}) => {
   const bannerRef = useRef<BannerAd>(null);
+  const [adFailedToLoad, setAdFailedToLoad] = useState(false);
 
   useForeground(() => {
     Platform.OS === 'ios' && bannerRef.current?.load();
   });
 
+  let bannerType = BannerAdSize.BANNER;
+
+  if (type == 'FullBanner') {
+    bannerType = BannerAdSize.MEDIUM_RECTANGLE;
+  } else if (type == 'RectangleBanner') {
+    bannerType = BannerAdSize.MEDIUM_RECTANGLE;
+  }
+
   return (
     <View style={styles.AdsContainer}>
-      <BannerAd
-        ref={bannerRef}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        unitId="ca-app-pub-2440162144079254/5133807254"
-        onAdLoaded={() => {
-          console.log('Advert loaded');
-        }}
-        onAdFailedToLoad={error => {
-          console.error('Advert failed to load: ', error);
-        }}
-      />
+      {!adFailedToLoad ? (
+        <BannerAd
+          ref={bannerRef}
+          size={bannerType}
+          unitId="ca-app-pub-2440162144079254/5133807254"
+          onAdLoaded={() => {
+            //console.log('Advert loaded');
+          }}
+          onAdFailedToLoad={error => {
+            //console.log('Advert failed to load: ', error);
+            setAdFailedToLoad(true);
+          }}
+        />
+      ) : (
+        <BannerAd
+          ref={bannerRef}
+          size={BannerAdSize.BANNER}
+          unitId="ca-app-pub-2440162144079254/5133807254"
+          onAdLoaded={() => {
+            //console.log('Advert loaded');
+          }}
+          onAdFailedToLoad={error => {
+            //console.log('Advert failed to load: ', error);
+          }}
+        />
+      )}
     </View>
   );
 };

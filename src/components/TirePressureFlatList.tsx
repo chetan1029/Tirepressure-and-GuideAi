@@ -122,7 +122,7 @@ const TirePressureFlatList: React.FC<TirePressureFlatListProps> = ({
             return null; // Ensure a valid return value for unexpected types
           }
         }}
-        style={{marginBottom: tabBarHeight * 2}}
+        style={{marginBottom: tabBarHeight * 1.5}}
       />
     </View>
   );

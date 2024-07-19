@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {BORDERRADIUS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {filterAiPrompt} from '../utils/common';
 
 interface GuideAiSearchCardProps {
   themeColor: any;
@@ -11,6 +12,7 @@ interface GuideAiSearchCardProps {
   item: any;
   searchViaGuideAi: any;
   userDetail: any;
+  t: any;
 }
 
 const GuideAiSearchCard: React.FC<GuideAiSearchCardProps> = ({
@@ -21,28 +23,43 @@ const GuideAiSearchCard: React.FC<GuideAiSearchCardProps> = ({
   item,
   searchViaGuideAi,
   userDetail,
+  t,
 }) => {
   return (
     <TouchableOpacity
       onPress={async () => {
-        const guideId = await searchViaGuideAi(
-          item.prompt,
-          item.type,
-          userDetail,
-        );
-        navigation.navigate(targetScreen, getNavigationParams(item, guideId));
+        if (await filterAiPrompt(item.prompt)) {
+          const guideId = await searchViaGuideAi(
+            item.prompt,
+            item.type,
+            userDetail,
+          );
+          navigation.navigate(targetScreen, getNavigationParams(item, guideId));
+        } else {
+          item.response = t('noKeywordMatch');
+          console.log(item);
+          navigation.navigate(targetScreen, {
+            prompt: item.prompt,
+            type: 'no-keywordMatch',
+            response: item.response,
+            guideId: '',
+          });
+        }
       }}
       style={[styles.CardLinearGradient]}>
       <View style={styles.CardInfoContainer}>
-        <View style={styles.iconContainer}>
-          <Ionicons
-            name="sparkles-outline"
-            size={16}
-            color={themeColor.primaryTextFocus}
-          />
-        </View>
         <Text style={[styles.CardTitle, {color: themeColor.primaryTextFocus}]}>
-          "{item.prompt}" - Search via Guide Ai
+          "{item.text}"{' '}
+          {item.from == 'guide' && (
+            <>
+              - Search via Guide Ai{' '}
+              <Ionicons
+                name="sparkles-outline"
+                size={16}
+                color={themeColor.primaryTextFocus}
+              />
+            </>
+          )}
         </Text>
       </View>
     </TouchableOpacity>
@@ -52,16 +69,10 @@ const GuideAiSearchCard: React.FC<GuideAiSearchCardProps> = ({
 export default GuideAiSearchCard;
 
 const styles = StyleSheet.create({
-  CardLinearGradient: {
-    padding: SPACING.space_20,
-    marginHorizontal: SPACING.space_20,
-  },
+  CardLinearGradient: {},
   CardInfoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  iconContainer: {
-    marginRight: 10,
   },
   CardTitle: {
     fontFamily: FONTFAMILY.poppins_medium,

@@ -72,9 +72,6 @@ const MyVehicleScreen = ({route, navigation}: any) => {
       {/* App Header */}
       <HeaderBar title={t('myGarage')} themeColor={themeColor} />
 
-      {/* Banner Ads */}
-      <BannerAds />
-
       {loading ? (
         <LoadingCard title="" />
       ) : (

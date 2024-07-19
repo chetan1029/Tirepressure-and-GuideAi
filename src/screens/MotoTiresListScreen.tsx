@@ -23,6 +23,7 @@ const MotoTiresListScreen = ({route, navigation}: any) => {
   const addMotoUserTire = useStore((state: any) => state.addMotoUserTire);
   const themeColor = useOfflineStore((state: any) => state.themeColor);
   const Settings = useOfflineStore((state: any) => state.Settings);
+  const searchViaGuideAi = useStore((state: any) => state.searchViaGuideAi);
   const UserDetail = useStore((state: any) => state.UserDetail);
 
   // Const
@@ -87,6 +88,8 @@ const MotoTiresListScreen = ({route, navigation}: any) => {
           themeColor={themeColor}
           targetScreen=""
           getNavigationParams={getNavigationParams}
+          searchViaGuideAi={searchViaGuideAi}
+          userDetail={UserDetail}
           t={t}
           addAutoUserTire={addMotoUserTire}
         />

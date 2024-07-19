@@ -124,6 +124,8 @@ const MotoMakeListScreen = ({navigation}: any) => {
           themeColor={themeColor}
           targetScreen="MotoModelListScreen"
           getNavigationParams={getNavigationParams}
+          searchViaGuideAi={''}
+          userDetail={''}
           t={t}
         />
       )}

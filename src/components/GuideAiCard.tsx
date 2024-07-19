@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {BORDERRADIUS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -28,13 +34,6 @@ const GuideAiCard: React.FC<GuideAiCardProps> = ({
         {backgroundColor: themeColor.priamryDarkBg},
       ]}>
       <View style={styles.CardInfoContainer}>
-        <View style={styles.iconContainer}>
-          <Ionicons
-            name="car-outline"
-            size={16}
-            color={themeColor.secondaryText}
-          />
-        </View>
         <Text style={[styles.CardTitle, {color: themeColor.secondaryText}]}>
           {item.prompt}
         </Text>

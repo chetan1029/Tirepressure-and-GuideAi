@@ -4,6 +4,7 @@ import {BORDERRADIUS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 import Markdown from 'react-native-markdown-display';
 import {ScrollView} from 'react-native-gesture-handler';
 import LoadingCard from './LoadingCard';
+import BannerAds from './BannerAds';
 
 interface GuideAiCardDetailProps {
   themeColor: any;
@@ -56,6 +57,9 @@ const GuideAiDetailCard: React.FC<GuideAiCardDetailProps> = ({
   return (
     <ScrollView style={styles.ScrollView}>
       <View style={[styles.CardInfoContainer, {marginBottom: tabBarHeight}]}>
+        {/* Banner Ads */}
+        <BannerAds type="FullBanner" />
+
         {item?.response ? (
           <Markdown style={markdownStyles}>{item?.response}</Markdown>
         ) : (

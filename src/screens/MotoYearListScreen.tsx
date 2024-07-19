@@ -137,6 +137,8 @@ const MotoYearListScreen = ({route, navigation}: any) => {
           themeColor={themeColor}
           targetScreen="MotoTiresListScreen"
           getNavigationParams={getNavigationParams}
+          searchViaGuideAi={''}
+          userDetail={''}
           t={t}
         />
       )}

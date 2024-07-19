@@ -64,6 +64,7 @@ const en = {
     moveToWishlist: 'Move {{title}} to Wishlist',
     lookingForResult: 'Looking for results...',
     noSearchInHistory: 'No search in history',
+    noKeywordMatch: 'Our Tire GuideAI specializes in answering questions specifically related to tire pressure and tires. If your query doesn\'t match these topics, please try refining your search.',
     // Tire Deals
     tireDeals: 'Tire Deals',
     tiresForSaleTitle: 'Tires For Sale',

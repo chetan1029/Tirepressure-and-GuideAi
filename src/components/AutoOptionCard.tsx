@@ -28,13 +28,6 @@ const AutoOptionCard: React.FC<AutoOptionCardProps> = ({
         {backgroundColor: themeColor.priamryDarkBg},
       ]}>
       <View style={styles.CardInfoContainer}>
-        <View style={styles.iconContainer}>
-          <Ionicons
-            name="car-outline"
-            size={18}
-            color={themeColor.secondaryText}
-          />
-        </View>
         <Text style={[styles.CardTitle, {color: themeColor.secondaryText}]}>
           {item.name}
         </Text>

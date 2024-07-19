@@ -12,6 +12,7 @@ import {useStore} from '../store/store';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import {SPACING} from '../theme/theme';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import BannerAds from '../components/BannerAds';
 
 const TireDealScreen = ({navigation}: any) => {
   // state
@@ -60,6 +61,7 @@ const TireDealScreen = ({navigation}: any) => {
         ListEmptyComponent={<EmptyListAnimation title={t('noResultFound')} />}
         showsVerticalScrollIndicator={false}
         data={TireDealItems}
+        ListFooterComponent={<BannerAds type="RectangleBanner" />}
         contentContainerStyle={styles.FlatListContainer}
         keyExtractor={(item, index) =>
           item.id ? item.id.toString() : index.toString()

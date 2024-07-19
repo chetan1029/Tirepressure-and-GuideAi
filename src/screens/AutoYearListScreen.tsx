@@ -137,6 +137,8 @@ const AutoYearListScreen = ({route, navigation}: any) => {
           themeColor={themeColor}
           targetScreen="AutoTiresListScreen"
           getNavigationParams={getNavigationParams}
+          searchViaGuideAi={''}
+          userDetail={''}
           t={t}
         />
       )}
