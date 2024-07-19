@@ -131,19 +131,27 @@ const GuideAiScreen = ({route, navigation}: any) => {
 
       {/* Search for Guide AI */}
       {searchText ? (
-        <GuideAiSearchCard
-          themeColor={themeColor}
-          navigation={navigation}
-          targetScreen="GuideAiDetailScreen"
-          getNavigationParams={(item: any, guideId: string) => ({
-            prompt: searchText,
-            type: 'user-history',
-            guideId: guideId,
-          })}
-          item={{prompt: searchText, type: 'user-history'}}
-          searchViaGuideAi={searchViaGuideAi}
-          userDetail={UserDetail}
-        />
+        <View style={styles.guideAiContainer}>
+          <GuideAiSearchCard
+            themeColor={themeColor}
+            navigation={navigation}
+            targetScreen="GuideAiDetailScreen"
+            getNavigationParams={(item: any, guideId: string) => ({
+              prompt: searchText,
+              type: 'user-history',
+              guideId: guideId,
+            })}
+            item={{
+              text: searchText,
+              prompt: searchText,
+              type: 'user-history',
+              from: 'guide',
+            }}
+            searchViaGuideAi={searchViaGuideAi}
+            userDetail={UserDetail}
+            t={t}
+          />
+        </View>
       ) : (
         ''
       )}
@@ -185,5 +193,8 @@ const styles = StyleSheet.create({
   HistoryTitle: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_12,
+  },
+  guideAiContainer: {
+    marginHorizontal: SPACING.space_20,
   },
 });

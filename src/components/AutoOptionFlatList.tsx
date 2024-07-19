@@ -13,6 +13,8 @@ interface AutoOptionFlatListProps {
   themeColor: any;
   targetScreen: string;
   getNavigationParams: (item: any) => any;
+  searchViaGuideAi: any;
+  userDetail: any;
   t: any;
   addAutoUserTire?: any;
 }
@@ -25,6 +27,8 @@ const AutoOptionFlatList: React.FC<AutoOptionFlatListProps> = ({
   themeColor,
   targetScreen,
   getNavigationParams,
+  searchViaGuideAi,
+  userDetail,
   t,
   addAutoUserTire,
 }) => {
@@ -56,12 +60,14 @@ const AutoOptionFlatList: React.FC<AutoOptionFlatListProps> = ({
               targetScreen={targetScreen}
               getNavigationParams={getNavigationParams}
               item={item}
+              searchViaGuideAi={searchViaGuideAi}
+              userDetail={userDetail}
               t={t}
               addAutoUserTire={addAutoUserTire}
             />
           );
         }}
-        style={{marginBottom: tabBarHeight * 2.2}}
+        style={{marginBottom: tabBarHeight * 3}}
       />
     </View>
   );

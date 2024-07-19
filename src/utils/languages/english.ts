@@ -32,6 +32,13 @@ const en = {
     searchAutoMake: 'Search Auto Make...',
     searchAutoModel: 'Search Auto Model...',
     searchAutoYear: 'Search Auto Year...',
+    selectMotoMake: 'Select Moto Make',
+    selectMotoModel: 'Select Moto Model',
+    selectMotoYear: 'Select Moto Year',
+    selectMotoTireSize: 'Select Moto Tire Size',
+    searchMotoMake: 'Search Moto Make...',
+    searchMotoModel: 'Search Moto Model...',
+    searchMotoYear: 'Search Auto Year...',
     noResultFound: 'No result found',
     addAutoToGarage: 'Add Auto to Garage',
     wannaAddAutoToGarage: 'Do you wanna add Auto to your Garage',
@@ -44,12 +51,6 @@ const en = {
     rideCondition: 'Ride Condition',
     calculateTirePressure: 'Calculate Tire Pressure',
     addedToMyGarage: 'Vehicle added to my Garage',
-    // My Garage
-    myWishlists: 'My Wishlists',
-    moveToPurchase: 'Move {{title}} to Fulfilled',
-    wannaDeleteItem: 'Are you sure you want to delete this item?',
-    isDeleted: '{{title}} has been deleted',
-    pullToRefresh: 'Pull to refresh',
     // Tire Guide Ai
     tireGuideAi: 'Tire Guide Ai',
     myPurchases: 'My Purchases',
@@ -57,6 +58,7 @@ const en = {
     moveToWishlist: 'Move {{title}} to Wishlist',
     lookingForResult: 'Looking for results...',
     noSearchInHistory: 'No search in history',
+    noKeywordMatch: 'Our Tire GuideAI specializes in answering questions specifically related to tire pressure and tires. If your query doesn\'t match these topics, please try refining your search.',
     // Tire Deals
     tireDeals: 'Tire Deals',
     tiresForSaleTitle: 'Tires For Sale',
@@ -66,30 +68,6 @@ const en = {
     tireRepairOnAmazon: 'Tire Repair Kit Deals on Amazon',
     tireInflatorOnAmazon: 'Tire Inflator Deals on Amazon',
     tirePressureMonitorOnAmazon: 'Tire Pressure on Amazon',
-    // Add to Wishlist
-    addToWishList: 'Add to Wishlist',
-    addNew: 'Add New...',
-    pasteYourLink: 'Paste your link here...',
-    addedToWishlist: 'Added to Wishlist',
-    errorAddingToWishlist: 'Error adding to Wishlist',
-    searchingForproduct: 'Searching for product details...',
-    wishComment: 'Add your Size, Color, Quantity or Type',
-    // Shared Wishlists
-    sharedWishlist: 'Friend´s Wishlists',
-    wannaAddToWishlist: 'Do you want to add {{categoryName}} to your shared wishlist?',
-    canNotAddYouselfToWishlist: 'You cannot share your own wishlist with yourself',
-    wishListNotFound: 'Wishlist not found',
-    sharedWishlistAlreadyExists: '{{categoryName}} already exists in your shared wishlist',
-    sharedWishlistSuccessfully: '{{categoryName}} added successfully',
-    inviteYourFriends: 'Invite your friends to share their wishlists and make gifting easier!',
-    // Shared Modal
-    removeWishList: 'Remove Wishlist',
-    wannaRemoveWishlist: 'Are you sure you want to remove the {{title}} wishlist?',
-    // Modal
-    editCategory: 'Edit Category',
-    share: 'Share',
-    newCategoryName: 'Enter the new category name:',
-    wannaDeleteCategory: 'Are you sure you want to delete the {{title}} category?',
     // User Tires Flat Lists
     noVehicleInGarage: 'No vehicle in your Garage',
     // User Profile

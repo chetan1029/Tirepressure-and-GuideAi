@@ -124,6 +124,8 @@ const AutoMakeListScreen = ({navigation}: any) => {
           themeColor={themeColor}
           targetScreen="AutoModelListScreen"
           getNavigationParams={getNavigationParams}
+          searchViaGuideAi={''}
+          userDetail={''}
           t={t}
         />
       )}

@@ -1,11 +1,4 @@
-import {
-  Image,
-  FlatList,
-  StatusBar,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import {FlatList, StatusBar, StyleSheet, View} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useStore} from '../store/store';
 import {useOfflineStore} from '../store/offline-store';
@@ -18,20 +11,20 @@ import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import AutoOptionFlatList from '../components/AutoOptionFlatList';
-import SearchBar from '../components/SearchBar';
+import {FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 import BannerAds from '../components/BannerAds';
 
-const AutoYearListScreen = ({route, navigation}: any) => {
+const MotoTiresListScreen = ({route, navigation}: any) => {
   // State
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [autoYearList, setAutoYearList] = useState<any>([]);
 
   // Store
-  const AutoYear = useStore((state: any) => state.AutoYear);
-  const fetchAutoYear = useStore((state: any) => state.fetchAutoYear);
+  const addMotoUserTire = useStore((state: any) => state.addMotoUserTire);
   const themeColor = useOfflineStore((state: any) => state.themeColor);
   const Settings = useOfflineStore((state: any) => state.Settings);
+  const searchViaGuideAi = useStore((state: any) => state.searchViaGuideAi);
+  const UserDetail = useStore((state: any) => state.UserDetail);
 
   // Const
   const {t} = useTranslation();
@@ -43,50 +36,16 @@ const AutoYearListScreen = ({route, navigation}: any) => {
   const makeName = route?.params?.makeName;
   const modelId = route?.params?.modelId;
   const modelName = route?.params?.modelName;
-
-  // Use effect to fetch models
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchAutoYear(makeId, modelId);
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [fetchAutoYear, makeId]);
-
-  // Use effect to update auto model list when AutoYear changes
-  useEffect(() => {
-    setAutoYearList(AutoYear);
-  }, [AutoYear]);
-
-  // Functions
-  const searchModelList = (search: string) => {
-    if (search != '') {
-      ListRef?.current?.scrollToOffset({
-        animated: true,
-        offset: 0,
-      });
-      setAutoYearList([
-        ...AutoYear.filter((item: any) =>
-          item.name.toLowerCase().includes(search.toLowerCase()),
-        ),
-      ]);
-    }
-  };
-
-  const resetYearSearch = () => {
-    setSearchText('');
-    setAutoYearList(AutoYear);
-  };
+  const year = route?.params?.year;
+  const tireSizes = route?.params?.tireSizes;
 
   const getNavigationParams = (item: any) => ({
     makeId: makeId,
     makeName: makeName,
     modelId: modelId,
     modelName: modelName,
-    year: item.id,
-    tireSizes: item?.tireSizes,
+    year: year,
+    user: UserDetail,
   });
 
   // use effect to use language
@@ -103,24 +62,16 @@ const AutoYearListScreen = ({route, navigation}: any) => {
 
       {/* App Header */}
       <HeaderBar
-        title={t('selectAutoYear')}
+        title={year + ' ' + makeName + ' ' + modelName}
         themeColor={themeColor}
         backButton={() => {
-          navigation.navigate('AutoModelListScreen', {
+          navigation.navigate('MotoYearListScreen', {
             makeId: makeId,
             makeName: makeName,
+            modelId: modelId,
+            modelName: modelName,
           });
         }}
-      />
-
-      {/* Search Input */}
-      <SearchBar
-        searchText={searchText}
-        searchList={searchModelList}
-        setSearchText={setSearchText}
-        resetSearch={resetYearSearch}
-        themeColor={themeColor}
-        placeholder={t('searchAutoYear')}
       />
 
       {/* Banner Ads */}
@@ -132,21 +83,22 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         <AutoOptionFlatList
           ListRef={ListRef}
           tabBarHeight={tabBarHeight}
-          userTires={autoYearList}
+          userTires={tireSizes}
           navigation={navigation}
           themeColor={themeColor}
-          targetScreen="AutoTiresListScreen"
+          targetScreen=""
           getNavigationParams={getNavigationParams}
-          searchViaGuideAi={''}
-          userDetail={''}
+          searchViaGuideAi={searchViaGuideAi}
+          userDetail={UserDetail}
           t={t}
+          addAutoUserTire={addMotoUserTire}
         />
       )}
     </View>
   );
 };
 
-export default AutoYearListScreen;
+export default MotoTiresListScreen;
 
 const styles = StyleSheet.create({
   ScreenContainer: {
@@ -162,5 +114,10 @@ const styles = StyleSheet.create({
   },
   LottieStyle: {
     height: 500,
+  },
+  TextTitle: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_20,
+    marginHorizontal: SPACING.space_20,
   },
 });

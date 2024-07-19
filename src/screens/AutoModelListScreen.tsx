@@ -130,6 +130,8 @@ const AutoModelListScreen = ({route, navigation}: any) => {
           themeColor={themeColor}
           targetScreen="AutoYearListScreen"
           getNavigationParams={getNavigationParams}
+          searchViaGuideAi={''}
+          userDetail={''}
           t={t}
         />
       )}

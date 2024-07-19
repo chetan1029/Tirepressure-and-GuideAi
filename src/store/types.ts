@@ -50,6 +50,7 @@ export interface GuideAiItem{
     prompt: string,
     response: any,
     type: string,
+    status?: any,
 }
 
 export interface TireDealItem{

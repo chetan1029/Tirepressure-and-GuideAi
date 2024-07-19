@@ -37,7 +37,7 @@ const TirePressureFlatList: React.FC<TirePressureFlatListProps> = ({
         contentContainerStyle={styles.FlatListContainer}
         keyExtractor={item => item.id}
         renderItem={({item}) => {
-          if (item.type == 'Auto') {
+          if (item.type == 'Auto' || item.type == 'Motorcycle') {
             return (
               <>
                 <AutoTirePressureCard
@@ -122,7 +122,7 @@ const TirePressureFlatList: React.FC<TirePressureFlatListProps> = ({
             return null; // Ensure a valid return value for unexpected types
           }
         }}
-        style={{marginBottom: tabBarHeight * 2}}
+        style={{marginBottom: tabBarHeight * 1.5}}
       />
     </View>
   );

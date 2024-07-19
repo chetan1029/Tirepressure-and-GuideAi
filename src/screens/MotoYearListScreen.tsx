@@ -21,15 +21,15 @@ import AutoOptionFlatList from '../components/AutoOptionFlatList';
 import SearchBar from '../components/SearchBar';
 import BannerAds from '../components/BannerAds';
 
-const AutoYearListScreen = ({route, navigation}: any) => {
+const MotoYearListScreen = ({route, navigation}: any) => {
   // State
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [autoYearList, setAutoYearList] = useState<any>([]);
+  const [motoYearList, setMotoYearList] = useState<any>([]);
 
   // Store
-  const AutoYear = useStore((state: any) => state.AutoYear);
-  const fetchAutoYear = useStore((state: any) => state.fetchAutoYear);
+  const MotoYear = useStore((state: any) => state.MotoYear);
+  const fetchMotoYear = useStore((state: any) => state.fetchMotoYear);
   const themeColor = useOfflineStore((state: any) => state.themeColor);
   const Settings = useOfflineStore((state: any) => state.Settings);
 
@@ -48,17 +48,17 @@ const AutoYearListScreen = ({route, navigation}: any) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await fetchAutoYear(makeId, modelId);
+      await fetchMotoYear(makeId, modelId);
       setLoading(false);
     };
 
     fetchData();
-  }, [fetchAutoYear, makeId]);
+  }, [fetchMotoYear, makeId]);
 
   // Use effect to update auto model list when AutoYear changes
   useEffect(() => {
-    setAutoYearList(AutoYear);
-  }, [AutoYear]);
+    setMotoYearList(MotoYear);
+  }, [MotoYear]);
 
   // Functions
   const searchModelList = (search: string) => {
@@ -67,8 +67,8 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         animated: true,
         offset: 0,
       });
-      setAutoYearList([
-        ...AutoYear.filter((item: any) =>
+      setMotoYearList([
+        ...MotoYear.filter((item: any) =>
           item.name.toLowerCase().includes(search.toLowerCase()),
         ),
       ]);
@@ -77,7 +77,7 @@ const AutoYearListScreen = ({route, navigation}: any) => {
 
   const resetYearSearch = () => {
     setSearchText('');
-    setAutoYearList(AutoYear);
+    setMotoYearList(MotoYear);
   };
 
   const getNavigationParams = (item: any) => ({
@@ -103,10 +103,10 @@ const AutoYearListScreen = ({route, navigation}: any) => {
 
       {/* App Header */}
       <HeaderBar
-        title={t('selectAutoYear')}
+        title={t('selectMotoYear')}
         themeColor={themeColor}
         backButton={() => {
-          navigation.navigate('AutoModelListScreen', {
+          navigation.navigate('MotoModelListScreen', {
             makeId: makeId,
             makeName: makeName,
           });
@@ -120,7 +120,7 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         setSearchText={setSearchText}
         resetSearch={resetYearSearch}
         themeColor={themeColor}
-        placeholder={t('searchAutoYear')}
+        placeholder={t('searchMotoYear')}
       />
 
       {/* Banner Ads */}
@@ -132,10 +132,10 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         <AutoOptionFlatList
           ListRef={ListRef}
           tabBarHeight={tabBarHeight}
-          userTires={autoYearList}
+          userTires={motoYearList}
           navigation={navigation}
           themeColor={themeColor}
-          targetScreen="AutoTiresListScreen"
+          targetScreen="MotoTiresListScreen"
           getNavigationParams={getNavigationParams}
           searchViaGuideAi={''}
           userDetail={''}
@@ -146,7 +146,7 @@ const AutoYearListScreen = ({route, navigation}: any) => {
   );
 };
 
-export default AutoYearListScreen;
+export default MotoYearListScreen;
 
 const styles = StyleSheet.create({
   ScreenContainer: {

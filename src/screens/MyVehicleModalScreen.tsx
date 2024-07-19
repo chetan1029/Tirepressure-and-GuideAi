@@ -5,7 +5,6 @@ import {
   Pressable,
   StyleSheet,
   FlatList,
-  Share,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -14,17 +13,18 @@ import {COLORS, SPACING} from '../theme/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import {useStore} from '../store/store';
 import {useOfflineStore} from '../store/offline-store';
-import {useEffect, useState} from 'react';
 import 'intl-pluralrules';
 import {useTranslation} from 'react-i18next';
 import i18n from '../utils/i18n';
+import {useEffect, useState} from 'react';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 type ItemProps = {
   itemTitle: string;
+  title: string;
   icon: string;
   action: string;
-  categoryIndex: any;
+  id: any;
   navigation: any;
   themeColor: any;
   t: any;
@@ -33,100 +33,37 @@ type ItemProps = {
 
 const Item = ({
   itemTitle,
+  title,
   icon,
   action,
-  categoryIndex,
+  id,
   navigation,
   themeColor,
   t,
   setLoading,
 }: ItemProps) => {
   // Store
-  const deleteCategory = useStore((state: any) => state.deleteCategory);
-  const updateCategory = useStore((state: any) => state.updateCategory);
+  const deleteFromUserTires = useStore(
+    (state: any) => state.deleteFromUserTires,
+  );
   const UserDetail = useStore((state: any) => state.UserDetail);
-  const CategoryList = useStore((state: any) => state.CategoryList);
 
-  const handleShare = async (title: string, action: string) => {
-    const categoryItem = CategoryList.find(
-      (c: {name: string}) => c.name === title,
-    );
-
-    let userName = 'Anonymous';
-    if (UserDetail?.displayName) {
-      userName = UserDetail.displayName;
-    }
-
-    let link = '';
-    if (categoryItem && categoryItem.id) {
-      //link = 'wishlist://wishlist/' + userName + '/' + categoryItem.id + '/' + categoryItem.name;
-      link =
-        'https://wishlist-338a1.web.app/wishlist/' +
-        userName +
-        '/' +
-        categoryItem.id +
-        '/' +
-        categoryItem.name;
-    }
-    if (action == 'share') {
-      try {
-        const shareOptions = {
-          url: link,
-        };
-
-        const result = await Share.share(shareOptions);
-
-        if (result.action === Share.sharedAction) {
-          console.log('Shared successfully');
-        } else if (result.action === Share.dismissedAction) {
-          console.log('Share cancelled');
-        }
-      } catch (error: any) {
-        console.error('Error sharing:', error.message);
-      }
-      navigation.goBack();
-    } else if (action === 'edit') {
-      // Implement edit category logic here
-      Alert.prompt(
-        t('editCategory'),
-        t('newCategoryName'),
-        [
-          {
-            text: t('cancel'),
-            style: 'cancel',
-          },
-          {
-            text: t('save'),
-            onPress: async newCategory => {
-              setLoading(true);
-              await updateCategory(title, newCategory, UserDetail);
-              setLoading(false);
-              navigation.navigate('WishList', {
-                category: newCategory,
-              });
-            },
-          },
-        ],
-        'plain-text', // Specify the input type
-        title, // Default value for the input field
-      );
-    } else if (action === 'delete') {
+  const handleAction = async (title: string, action: string, id: string) => {
+    if (action === 'delete') {
       // Implement delete category logic here
-      Alert.alert(t('confirmation'), t('wannaDeleteCategory', {title}), [
+      Alert.alert(t('confirmation'), t('wannaRemoveVehicle', {title}), [
         {
           text: t('cancel'),
           style: 'cancel',
         },
         {
-          text: t('delete'),
+          text: t('remove'),
           style: 'destructive',
           onPress: async () => {
             setLoading(true);
-            await deleteCategory(title, UserDetail);
+            await deleteFromUserTires(id, UserDetail);
             setLoading(false);
-            navigation.navigate('WishList', {
-              index: 0,
-            });
+            navigation.navigate('MyVehicleScreen');
           },
         },
       ]);
@@ -134,8 +71,7 @@ const Item = ({
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => handleShare(categoryIndex.category, action)}>
+    <TouchableOpacity onPress={() => handleAction(title, action, id)}>
       <View style={[styles.item, {backgroundColor: themeColor.priamryDarkBg}]}>
         <View style={styles.iconContainer}>
           <Feather
@@ -152,39 +88,15 @@ const Item = ({
   );
 };
 
-function ModalScreen({navigation, route}: any) {
+function MyVehicleModalScreen({navigation, route}: any) {
   // state
-  const {current} = useCardAnimation();
-  const categoryIndex = route?.params?.categoryIndex;
   const [loading, setLoading] = useState(false);
 
   // store
-  const themeColor = useOfflineStore((state: any) => state.themeColor);
   const Settings = useOfflineStore((state: any) => state.Settings);
 
-  // const
+  // Const
   const {t} = useTranslation();
-
-  const DATA = [
-    {
-      id: '1',
-      title: t('editCategory'),
-      icon: 'edit',
-      action: 'edit',
-    },
-    {
-      id: '2',
-      title: t('share'),
-      icon: 'share',
-      action: 'share',
-    },
-    {
-      id: '3',
-      title: t('delete'),
-      icon: 'trash',
-      action: 'delete',
-    },
-  ];
 
   // use effect to use language
   useEffect(() => {
@@ -192,6 +104,22 @@ function ModalScreen({navigation, route}: any) {
       i18n.changeLanguage(Settings.language);
     }
   }, [Settings]);
+
+  const {current} = useCardAnimation();
+  const tireId = route?.params?.id;
+  const title = route?.params?.title;
+  const themeColor = useOfflineStore((state: any) => state.themeColor);
+
+  const DATA = [
+    {
+      id: '1',
+      tireId: tireId,
+      itemTitle: t('removeTire'),
+      title: title,
+      icon: 'trash',
+      action: 'delete',
+    },
+  ];
 
   return (
     <View style={styles.modalContainer}>
@@ -226,14 +154,15 @@ function ModalScreen({navigation, route}: any) {
           data={DATA}
           renderItem={({item}) => (
             <Item
-              itemTitle={item.title}
+              itemTitle={item.itemTitle}
+              title={item.title}
               icon={item.icon}
               action={item.action}
-              categoryIndex={categoryIndex}
+              id={item.tireId}
               navigation={navigation}
               themeColor={themeColor}
-              setLoading={setLoading}
               t={t}
+              setLoading={setLoading}
             />
           )}
           keyExtractor={item => item.id}
@@ -252,7 +181,7 @@ function ModalScreen({navigation, route}: any) {
   );
 }
 
-export default ModalScreen;
+export default MyVehicleModalScreen;
 
 const styles = StyleSheet.create({
   modalContainer: {

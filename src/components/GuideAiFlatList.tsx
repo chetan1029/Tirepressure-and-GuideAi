@@ -3,7 +3,6 @@ import React from 'react';
 import {SPACING} from '../theme/theme';
 import EmptyListAnimation from './EmptyListAnimation';
 import GuideAiCard from './GuideAiCard';
-import EmptySharedWishList from './EmptySharedWishList';
 
 interface GuideAiFlatListProps {
   ListRef: any;

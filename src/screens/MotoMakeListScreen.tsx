@@ -21,15 +21,15 @@ import AutoOptionFlatList from '../components/AutoOptionFlatList';
 import SearchBar from '../components/SearchBar';
 import BannerAds from '../components/BannerAds';
 
-const AutoYearListScreen = ({route, navigation}: any) => {
+const MotoMakeListScreen = ({navigation}: any) => {
   // State
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [autoYearList, setAutoYearList] = useState<any>([]);
+  const [motoMakeList, setMotoMakeList] = useState<any>([]);
 
   // Store
-  const AutoYear = useStore((state: any) => state.AutoYear);
-  const fetchAutoYear = useStore((state: any) => state.fetchAutoYear);
+  const MotoMake = useStore((state: any) => state.MotoMake);
+  const fetchMotoMake = useStore((state: any) => state.fetchMotoMake);
   const themeColor = useOfflineStore((state: any) => state.themeColor);
   const Settings = useOfflineStore((state: any) => state.Settings);
 
@@ -38,55 +38,45 @@ const AutoYearListScreen = ({route, navigation}: any) => {
   const ListRef: any = useRef<FlatList>();
   const tabBarHeight = useBottomTabBarHeight();
 
-  // Other variables
-  const makeId = route?.params?.makeId;
-  const makeName = route?.params?.makeName;
-  const modelId = route?.params?.modelId;
-  const modelName = route?.params?.modelName;
-
-  // Use effect to fetch models
+  // Use effect to fetch wish list
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await fetchAutoYear(makeId, modelId);
+      await fetchMotoMake();
       setLoading(false);
     };
 
     fetchData();
-  }, [fetchAutoYear, makeId]);
+  }, [fetchMotoMake]);
 
-  // Use effect to update auto model list when AutoYear changes
+  // Use effect to update auto make list when Automake changes
   useEffect(() => {
-    setAutoYearList(AutoYear);
-  }, [AutoYear]);
+    setMotoMakeList(MotoMake);
+  }, [MotoMake]);
 
   // Functions
-  const searchModelList = (search: string) => {
+  const searchMakeList = (search: string) => {
     if (search != '') {
       ListRef?.current?.scrollToOffset({
         animated: true,
         offset: 0,
       });
-      setAutoYearList([
-        ...AutoYear.filter((item: any) =>
+      setMotoMakeList([
+        ...MotoMake.filter((item: any) =>
           item.name.toLowerCase().includes(search.toLowerCase()),
         ),
       ]);
     }
   };
 
-  const resetYearSearch = () => {
+  const resetMakeSearch = () => {
     setSearchText('');
-    setAutoYearList(AutoYear);
+    setMotoMakeList(MotoMake);
   };
 
   const getNavigationParams = (item: any) => ({
-    makeId: makeId,
-    makeName: makeName,
-    modelId: modelId,
-    modelName: modelName,
-    year: item.id,
-    tireSizes: item?.tireSizes,
+    makeId: item.id,
+    makeName: item.name,
   });
 
   // use effect to use language
@@ -103,24 +93,21 @@ const AutoYearListScreen = ({route, navigation}: any) => {
 
       {/* App Header */}
       <HeaderBar
-        title={t('selectAutoYear')}
+        title={t('selectMotoMake')}
         themeColor={themeColor}
         backButton={() => {
-          navigation.navigate('AutoModelListScreen', {
-            makeId: makeId,
-            makeName: makeName,
-          });
+          navigation.navigate('AddUserTireScreen');
         }}
       />
 
       {/* Search Input */}
       <SearchBar
         searchText={searchText}
-        searchList={searchModelList}
+        searchList={searchMakeList}
         setSearchText={setSearchText}
-        resetSearch={resetYearSearch}
+        resetSearch={resetMakeSearch}
         themeColor={themeColor}
-        placeholder={t('searchAutoYear')}
+        placeholder={t('searchMotoMake')}
       />
 
       {/* Banner Ads */}
@@ -132,10 +119,10 @@ const AutoYearListScreen = ({route, navigation}: any) => {
         <AutoOptionFlatList
           ListRef={ListRef}
           tabBarHeight={tabBarHeight}
-          userTires={autoYearList}
+          userTires={motoMakeList}
           navigation={navigation}
           themeColor={themeColor}
-          targetScreen="AutoTiresListScreen"
+          targetScreen="MotoModelListScreen"
           getNavigationParams={getNavigationParams}
           searchViaGuideAi={''}
           userDetail={''}
@@ -146,7 +133,7 @@ const AutoYearListScreen = ({route, navigation}: any) => {
   );
 };
 
-export default AutoYearListScreen;
+export default MotoMakeListScreen;
 
 const styles = StyleSheet.create({
   ScreenContainer: {

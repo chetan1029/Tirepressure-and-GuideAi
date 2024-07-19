@@ -18,8 +18,6 @@ import firestore from '@react-native-firebase/firestore';
 import HeaderBar from '../components/HeaderBar';
 import LoadingCard from '../components/LoadingCard';
 import GuideAiDetailCard from '../components/GuideAiDetailCard';
-import BannerAds from '../components/BannerAds';
-import {CommonActions} from '@react-navigation/native';
 
 const GuideAiDetailScreen = ({route, navigation}: any) => {
   // State
@@ -61,7 +59,6 @@ const GuideAiDetailScreen = ({route, navigation}: any) => {
             const modifiedData = snapshot.data();
             setGuideAiDetail(modifiedData); // Update state with modified data
           } else {
-            console.log('Document does not exist');
             setGuideAiDetail({}); // Handle case where document doesn't exist
           }
         });
@@ -70,13 +67,12 @@ const GuideAiDetailScreen = ({route, navigation}: any) => {
       return () => {
         unsubscribe();
       };
+    } else if (item?.type && item?.type == 'no-keywordMatch') {
+      setGuideAiDetail(item);
     } else {
-      console.log('Document does not exist');
       setGuideAiDetail(item.item);
     }
   }, [item, UserDetail]);
-
-  console.log(item?.prompt);
 
   return (
     <View
@@ -91,8 +87,6 @@ const GuideAiDetailScreen = ({route, navigation}: any) => {
           navigation.navigate('GuideAiScreen');
         }}
       />
-      {/* Banner Ads */}
-      <BannerAds />
       {loading ? (
         <LoadingCard title={item?.prompt} />
       ) : (
