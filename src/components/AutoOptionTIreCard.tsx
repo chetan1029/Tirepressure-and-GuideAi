@@ -69,7 +69,7 @@ const AutoOptionTireCard: React.FC<AutoOptionTireCardProps> = ({
               routes: [{name: 'AddUserTireScreen'}],
             }),
           );
-          showToast(t('addedToWishlist'), 'success');
+          showToast(t('addedToMyGarage'), 'success');
         },
       },
     ]);
