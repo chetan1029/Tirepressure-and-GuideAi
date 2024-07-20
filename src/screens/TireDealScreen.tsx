@@ -77,7 +77,7 @@ const TireDealScreen = ({navigation}: any) => {
             />
           );
         }}
-        style={{marginBottom: tabBarHeight * 2.2}}
+        style={{marginBottom: tabBarHeight * 1.2}}
       />
     </View>
   );

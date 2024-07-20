@@ -25,6 +25,7 @@ interface TextInputFieldProp {
   iconText?: any;
   size: 'S' | 'M';
   keyboardType: any;
+  returnKeyType: 'done' | 'next' | 'search' | 'go' | 'send';
 }
 
 const TextInputField: React.FC<TextInputFieldProp> = ({
@@ -36,7 +37,8 @@ const TextInputField: React.FC<TextInputFieldProp> = ({
   icon,
   size,
   iconText,
-  keyboardType,
+  keyboardType = 'default',
+  returnKeyType = 'done',
 }) => {
   const inputHeight =
     size === 'S' ? SPACING.space_20 * 2 : SPACING.space_20 * 2.5;
@@ -77,6 +79,7 @@ const TextInputField: React.FC<TextInputFieldProp> = ({
         onChangeText={handleOnChageText}
         value={value}
         keyboardType={keyboardType}
+        returnKeyType={returnKeyType}
       />
     </View>
   );

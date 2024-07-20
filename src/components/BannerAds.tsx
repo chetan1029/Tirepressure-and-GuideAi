@@ -52,7 +52,7 @@ const BannerAds: React.FC<BannerAdsProps> = ({type}) => {
             //console.log('Advert loaded');
           }}
           onAdFailedToLoad={error => {
-            //console.log('Advert failed to load: ', error);
+            console.log('Advert failed to load: ', error);
           }}
         />
       )}
