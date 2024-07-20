@@ -122,26 +122,6 @@ const SettingScreen = ({route, navigation}: any) => {
         </View>
       )}
 
-      {!UserDetail?.isAnonymous && (
-        <TouchableOpacity
-          style={[
-            styles.InputContainerComponent,
-            {backgroundColor: themeColor.priamryDarkBg},
-          ]}
-          onPress={() => {
-            navigation.navigate('UserProfile');
-          }}>
-          <View style={styles.titleContainer}>
-            <View style={styles.iconContainer}>
-              <Feather name="user" size={16} color={themeColor.secondaryText} />
-            </View>
-            <Text style={{color: themeColor.secondaryText}}>
-              {t('userProfile')}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )}
-
       <View
         style={[
           styles.InputContainerComponent,
