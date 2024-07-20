@@ -38,7 +38,7 @@ const en = {
     selectMotoTireSize: 'Select Moto Tire Size',
     searchMotoMake: 'Search Moto Make...',
     searchMotoModel: 'Search Moto Model...',
-    searchMotoYear: 'Search Auto Year...',
+    searchMotoYear: 'Search Moto Year...',
     noResultFound: 'No result found',
     addAutoToGarage: 'Add Auto to Garage',
     wannaAddAutoToGarage: 'Do you wanna add Auto to your Garage',

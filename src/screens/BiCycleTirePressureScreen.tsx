@@ -1,4 +1,8 @@
 import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
   StatusBar,
   StyleSheet,
   Switch,
@@ -136,332 +140,349 @@ const BiCycleTirePressureScreen = ({route, navigation}: any) => {
   };
 
   return (
-    <View
-      style={[styles.ScreenContainer, {backgroundColor: themeColor.primaryBg}]}>
-      <StatusBar backgroundColor={themeColor.primaryBg}></StatusBar>
-
-      {/* App Header */}
-      <HeaderBar
-        title={t('biCycleTirePressure')}
-        themeColor={themeColor}
-        backButton={() => {
-          navigation.navigate('AddUserTireScreen');
-        }}
-      />
-
-      {/* User Profile */}
-      <Formik
-        innerRef={formRef}
-        initialValues={initialFormValues}
-        validationSchema={userProfileValidationSchema}
-        validateOnChange={false}
-        validateOnBlur={false}
-        onSubmit={async (values, actions) => {
-          try {
-            const frontPressure = calculatePressure(
-              Number(values.riderWeight),
-              values.frontTireWidth,
-              false,
-              values.rideCondition,
-              values.weightUnit,
-              values.tubelessTire,
-            );
-            const rearPressure = calculatePressure(
-              Number(values.riderWeight),
-              values.frontTireWidth,
-              true,
-              values.rideCondition,
-              values.weightUnit,
-              values.tubelessTire,
-            );
-            if (frontPressure > 0 && rearPressure > 0) {
-              setBicyclePressure({
-                front_tire_pressure: frontPressure,
-                front_tire_size: values.frontTireWidth,
-                rear_tire_pressure: rearPressure,
-                rear_tire_size: values.rearTireWidth,
-                rider_weight: Number(values.riderWeight),
-                ride_condition: values.rideCondition,
-                weight_unit: values.weightUnit,
-                tubeless_tire: values.tubelessTire,
-              });
-            }
-          } catch (error) {
-            console.error('Error calculating tire pressure', error);
-          } finally {
-          }
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Adjust behavior based on platform
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0} // Optional: Adjust keyboard offset
+    >
+      <Pressable
+        style={{flex: 1}}
+        onPress={() => {
+          Keyboard.dismiss();
         }}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-          errors,
-        }) => (
-          <View>
-            {/* Front Tire Width */}
-            <View
-              style={[
-                styles.InputContainerComponent,
-                {backgroundColor: themeColor.priamryDarkBg},
-              ]}>
-              <View style={styles.titleContainer}>
-                <Text style={{color: themeColor.secondaryText}}>
-                  {t('frontTireWidth')}
-                </Text>
-              </View>
-              <RNPickerSelect
-                items={tireWidthData}
-                onValueChange={value => {
-                  setFieldValue('frontTireWidth', value);
-                }}
-                value={values.frontTireWidth}
-                style={{
-                  ...pickerSelectStyles,
-                  inputIOS: {
-                    ...pickerSelectStyles.inputIOS,
-                    color: themeColor.secondaryText,
-                  },
-                  inputAndroid: {
-                    ...pickerSelectStyles.inputAndroid,
-                    color: themeColor.secondaryText,
-                  },
-                }}
-                placeholder={{}}
-                Icon={() => {
-                  return (
-                    <Feather
-                      name="chevron-right"
-                      size={20}
-                      color={themeColor.secondaryText}
-                      style={styles.pickerIcon}
-                    />
-                  );
-                }}
-              />
-            </View>
+        <View
+          style={[
+            styles.ScreenContainer,
+            {backgroundColor: themeColor.primaryBg},
+          ]}>
+          <StatusBar backgroundColor={themeColor.primaryBg}></StatusBar>
 
-            {/* Rear Tire Width */}
-            <View
-              style={[
-                styles.InputContainerComponent,
-                {backgroundColor: themeColor.priamryDarkBg},
-              ]}>
-              <View style={styles.titleContainer}>
-                <Text style={{color: themeColor.secondaryText}}>
-                  {t('rearTireWidth')}
-                </Text>
-              </View>
-              <RNPickerSelect
-                items={tireWidthData}
-                onValueChange={value => {
-                  setFieldValue('rearTireWidth', value);
-                }}
-                value={values.rearTireWidth}
-                style={{
-                  ...pickerSelectStyles,
-                  inputIOS: {
-                    ...pickerSelectStyles.inputIOS,
-                    color: themeColor.secondaryText,
-                  },
-                  inputAndroid: {
-                    ...pickerSelectStyles.inputAndroid,
-                    color: themeColor.secondaryText,
-                  },
-                }}
-                placeholder={{}}
-                Icon={() => {
-                  return (
-                    <Feather
-                      name="chevron-right"
-                      size={20}
-                      color={themeColor.secondaryText}
-                      style={styles.pickerIcon}
-                    />
-                  );
-                }}
-              />
-            </View>
-
-            {/* Ride Condition */}
-            <View
-              style={[
-                styles.InputContainerComponent,
-                {backgroundColor: themeColor.priamryDarkBg},
-              ]}>
-              <View style={styles.titleContainer}>
-                <Text style={{color: themeColor.secondaryText}}>
-                  {t('rideCondition')}
-                </Text>
-              </View>
-              <RNPickerSelect
-                items={rideConditionData}
-                onValueChange={value => {
-                  setFieldValue('rideCondition', value);
-                }}
-                value={values.rideCondition}
-                style={{
-                  ...pickerSelectStyles,
-                  inputIOS: {
-                    ...pickerSelectStyles.inputIOS,
-                    color: themeColor.secondaryText,
-                  },
-                  inputAndroid: {
-                    ...pickerSelectStyles.inputAndroid,
-                    color: themeColor.secondaryText,
-                  },
-                }}
-                placeholder={{}}
-                Icon={() => {
-                  return (
-                    <Feather
-                      name="chevron-right"
-                      size={20}
-                      color={themeColor.secondaryText}
-                      style={styles.pickerIcon}
-                    />
-                  );
-                }}
-              />
-            </View>
-
-            {/* Kg / Lbs options */}
-            <View style={styles.outerContainer}>
-              <View style={styles.switchContainer}>
-                <Text
-                  style={[
-                    styles.switchLabel,
-                    {color: themeColor.secondaryText},
-                  ]}>
-                  Kg
-                </Text>
-                <Switch
-                  trackColor={{
-                    false: themeColor.primaryBgLight,
-                    true: themeColor.primaryTextFocus,
-                  }}
-                  thumbColor={
-                    values.weightUnit
-                      ? themeColor.secondaryText
-                      : themeColor.secondaryText
-                  }
-                  ios_backgroundColor={themeColor.priamryDarkBg}
-                  onValueChange={value => {
-                    setFieldValue('weightUnit', value);
-                  }}
-                  value={values.weightUnit}
-                  style={styles.switch}
-                />
-                <Text
-                  style={[
-                    styles.switchLabel,
-                    {color: themeColor.secondaryText},
-                  ]}>
-                  Lbs
-                </Text>
-              </View>
-            </View>
-
-            {/* Rider Weight */}
-            <TextInputField
-              value={values.riderWeight}
-              handleOnChageText={(value: string) => {
-                const normalizedValue = normalizeInput(value);
-                setFieldValue('riderWeight', normalizedValue);
-              }}
-              placeholder={t('enterRiderWeight')}
-              error={errors.riderWeight}
-              themeColor={themeColor}
-              iconText="Rider Weight"
-              size="M"
-              keyboardType="numeric"
-            />
-
-            {/* Tubeless Tire options */}
-            <View style={styles.outerContainer}>
-              <View style={styles.switchContainer}>
-                <Text
-                  style={[
-                    styles.switchLabel,
-                    {color: themeColor.secondaryText},
-                  ]}>
-                  Tube Tire
-                </Text>
-                <Switch
-                  trackColor={{
-                    false: themeColor.primaryBgLight,
-                    true: themeColor.primaryTextFocus,
-                  }}
-                  thumbColor={
-                    values.tubelessTire
-                      ? themeColor.secondaryText
-                      : themeColor.secondaryText
-                  }
-                  ios_backgroundColor={themeColor.priamryDarkBg}
-                  onValueChange={value => {
-                    setFieldValue('tubelessTire', value);
-                  }}
-                  value={values.tubelessTire}
-                  style={styles.switch}
-                />
-                <Text
-                  style={[
-                    styles.switchLabel,
-                    {color: themeColor.secondaryText},
-                  ]}>
-                  Tubeless Tire
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.ButtonContainerComponent}>
-              <TouchableOpacity
-                style={styles.ButtonContainer}
-                onPress={() => {
-                  handleSubmit();
-                }}>
-                <Text style={styles.ButtonText}>
-                  {t('calculateTirePressure')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </Formik>
-      {bicyclePressure ? (
-        <View style={styles.pressureCard}>
-          <BiCycleTirePressureCard
-            item={bicyclePressure}
+          {/* App Header */}
+          <HeaderBar
+            title={t('biCycleTirePressure')}
             themeColor={themeColor}
-            navigation={navigation}
-            t={t}
-            userDetail={UserDetail}
-            addBicycleUserTire={addBicycleUserTire}
+            backButton={() => {
+              navigation.navigate('AddUserTireScreen');
+            }}
           />
-          <AmazonTireDeal
-            link={amazonDealLink}
-            title={
-              bicyclePressure.front_tire_size +
-              'mm / ' +
-              bicyclePressure.rear_tire_size +
-              'mm Bicycle Tires'
-            }
-            subtitle={
-              'Find ' +
-              bicyclePressure?.front_tire_size +
-              'mm / ' +
-              bicyclePressure?.rear_tire_size +
-              'mm tires for all vehicles. Great prices and fast shipping on Amazon'
-            }
-            icon={'logo-amazon'}
-            themeColor={themeColor}
-          />
+
+          {/* User Profile */}
+          <Formik
+            innerRef={formRef}
+            initialValues={initialFormValues}
+            validationSchema={userProfileValidationSchema}
+            validateOnChange={false}
+            validateOnBlur={false}
+            onSubmit={async (values, actions) => {
+              try {
+                Keyboard.dismiss();
+                const frontPressure = calculatePressure(
+                  Number(values.riderWeight),
+                  values.frontTireWidth,
+                  false,
+                  values.rideCondition,
+                  values.weightUnit,
+                  values.tubelessTire,
+                );
+                const rearPressure = calculatePressure(
+                  Number(values.riderWeight),
+                  values.frontTireWidth,
+                  true,
+                  values.rideCondition,
+                  values.weightUnit,
+                  values.tubelessTire,
+                );
+                if (frontPressure > 0 && rearPressure > 0) {
+                  setBicyclePressure({
+                    front_tire_pressure: frontPressure,
+                    front_tire_size: values.frontTireWidth,
+                    rear_tire_pressure: rearPressure,
+                    rear_tire_size: values.rearTireWidth,
+                    rider_weight: Number(values.riderWeight),
+                    ride_condition: values.rideCondition,
+                    weight_unit: values.weightUnit,
+                    tubeless_tire: values.tubelessTire,
+                  });
+                }
+              } catch (error) {
+                console.error('Error calculating tire pressure', error);
+              } finally {
+              }
+            }}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              setFieldValue,
+              values,
+              errors,
+            }) => (
+              <View>
+                {/* Front Tire Width */}
+                <View
+                  style={[
+                    styles.InputContainerComponent,
+                    {backgroundColor: themeColor.priamryDarkBg},
+                  ]}>
+                  <View style={styles.titleContainer}>
+                    <Text style={{color: themeColor.secondaryText}}>
+                      {t('frontTireWidth')}
+                    </Text>
+                  </View>
+                  <RNPickerSelect
+                    items={tireWidthData}
+                    onValueChange={value => {
+                      setFieldValue('frontTireWidth', value);
+                    }}
+                    value={values.frontTireWidth}
+                    style={{
+                      ...pickerSelectStyles,
+                      inputIOS: {
+                        ...pickerSelectStyles.inputIOS,
+                        color: themeColor.secondaryText,
+                      },
+                      inputAndroid: {
+                        ...pickerSelectStyles.inputAndroid,
+                        color: themeColor.secondaryText,
+                      },
+                    }}
+                    placeholder={{}}
+                    Icon={() => {
+                      return (
+                        <Feather
+                          name="chevron-right"
+                          size={20}
+                          color={themeColor.secondaryText}
+                          style={styles.pickerIcon}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+
+                {/* Rear Tire Width */}
+                <View
+                  style={[
+                    styles.InputContainerComponent,
+                    {backgroundColor: themeColor.priamryDarkBg},
+                  ]}>
+                  <View style={styles.titleContainer}>
+                    <Text style={{color: themeColor.secondaryText}}>
+                      {t('rearTireWidth')}
+                    </Text>
+                  </View>
+                  <RNPickerSelect
+                    items={tireWidthData}
+                    onValueChange={value => {
+                      setFieldValue('rearTireWidth', value);
+                    }}
+                    value={values.rearTireWidth}
+                    style={{
+                      ...pickerSelectStyles,
+                      inputIOS: {
+                        ...pickerSelectStyles.inputIOS,
+                        color: themeColor.secondaryText,
+                      },
+                      inputAndroid: {
+                        ...pickerSelectStyles.inputAndroid,
+                        color: themeColor.secondaryText,
+                      },
+                    }}
+                    placeholder={{}}
+                    Icon={() => {
+                      return (
+                        <Feather
+                          name="chevron-right"
+                          size={20}
+                          color={themeColor.secondaryText}
+                          style={styles.pickerIcon}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+
+                {/* Ride Condition */}
+                <View
+                  style={[
+                    styles.InputContainerComponent,
+                    {backgroundColor: themeColor.priamryDarkBg},
+                  ]}>
+                  <View style={styles.titleContainer}>
+                    <Text style={{color: themeColor.secondaryText}}>
+                      {t('rideCondition')}
+                    </Text>
+                  </View>
+                  <RNPickerSelect
+                    items={rideConditionData}
+                    onValueChange={value => {
+                      setFieldValue('rideCondition', value);
+                    }}
+                    value={values.rideCondition}
+                    style={{
+                      ...pickerSelectStyles,
+                      inputIOS: {
+                        ...pickerSelectStyles.inputIOS,
+                        color: themeColor.secondaryText,
+                      },
+                      inputAndroid: {
+                        ...pickerSelectStyles.inputAndroid,
+                        color: themeColor.secondaryText,
+                      },
+                    }}
+                    placeholder={{}}
+                    Icon={() => {
+                      return (
+                        <Feather
+                          name="chevron-right"
+                          size={20}
+                          color={themeColor.secondaryText}
+                          style={styles.pickerIcon}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+
+                {/* Kg / Lbs options */}
+                <View style={styles.outerContainer}>
+                  <View style={styles.switchContainer}>
+                    <Text
+                      style={[
+                        styles.switchLabel,
+                        {color: themeColor.secondaryText},
+                      ]}>
+                      Kg
+                    </Text>
+                    <Switch
+                      trackColor={{
+                        false: themeColor.primaryBgLight,
+                        true: themeColor.primaryTextFocus,
+                      }}
+                      thumbColor={
+                        values.weightUnit
+                          ? themeColor.secondaryText
+                          : themeColor.secondaryText
+                      }
+                      ios_backgroundColor={themeColor.priamryDarkBg}
+                      onValueChange={value => {
+                        setFieldValue('weightUnit', value);
+                      }}
+                      value={values.weightUnit}
+                      style={styles.switch}
+                    />
+                    <Text
+                      style={[
+                        styles.switchLabel,
+                        {color: themeColor.secondaryText},
+                      ]}>
+                      Lbs
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Rider Weight */}
+                <TextInputField
+                  value={values.riderWeight}
+                  handleOnChageText={(value: string) => {
+                    const normalizedValue = normalizeInput(value);
+                    setFieldValue('riderWeight', normalizedValue);
+                  }}
+                  placeholder={t('enterRiderWeight')}
+                  error={errors.riderWeight}
+                  themeColor={themeColor}
+                  iconText="Rider Weight"
+                  size="M"
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                />
+
+                {/* Tubeless Tire options */}
+                <View style={styles.outerContainer}>
+                  <View style={styles.switchContainer}>
+                    <Text
+                      style={[
+                        styles.switchLabel,
+                        {color: themeColor.secondaryText},
+                      ]}>
+                      Tube Tire
+                    </Text>
+                    <Switch
+                      trackColor={{
+                        false: themeColor.primaryBgLight,
+                        true: themeColor.primaryTextFocus,
+                      }}
+                      thumbColor={
+                        values.tubelessTire
+                          ? themeColor.secondaryText
+                          : themeColor.secondaryText
+                      }
+                      ios_backgroundColor={themeColor.priamryDarkBg}
+                      onValueChange={value => {
+                        setFieldValue('tubelessTire', value);
+                      }}
+                      value={values.tubelessTire}
+                      style={styles.switch}
+                    />
+                    <Text
+                      style={[
+                        styles.switchLabel,
+                        {color: themeColor.secondaryText},
+                      ]}>
+                      Tubeless Tire
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.ButtonContainerComponent}>
+                  <TouchableOpacity
+                    style={styles.ButtonContainer}
+                    onPress={() => {
+                      handleSubmit();
+                    }}>
+                    <Text style={styles.ButtonText}>
+                      {t('calculateTirePressure')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
+          {bicyclePressure ? (
+            <View style={styles.pressureCard}>
+              <BiCycleTirePressureCard
+                item={bicyclePressure}
+                themeColor={themeColor}
+                navigation={navigation}
+                t={t}
+                userDetail={UserDetail}
+                addBicycleUserTire={addBicycleUserTire}
+              />
+              <AmazonTireDeal
+                link={amazonDealLink}
+                title={
+                  bicyclePressure.front_tire_size +
+                  'mm / ' +
+                  bicyclePressure.rear_tire_size +
+                  'mm Bicycle Tires'
+                }
+                subtitle={
+                  'Find ' +
+                  bicyclePressure?.front_tire_size +
+                  'mm / ' +
+                  bicyclePressure?.rear_tire_size +
+                  'mm tires for all vehicles. Great prices and fast shipping on Amazon'
+                }
+                icon={'logo-amazon'}
+                themeColor={themeColor}
+              />
+            </View>
+          ) : (
+            ''
+          )}
         </View>
-      ) : (
-        ''
-      )}
-    </View>
+      </Pressable>
+    </KeyboardAvoidingView>
   );
 };
 

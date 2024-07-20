@@ -111,7 +111,7 @@ const SettingScreen = ({route, navigation}: any) => {
       <HeaderBar
         title={t('settings')}
         themeColor={themeColor}
-        logoutButton={true}
+        logoutButton={false}
         onLogoutHandle={onLogoutHandle}
       />
 
@@ -286,7 +286,7 @@ const SettingScreen = ({route, navigation}: any) => {
           {backgroundColor: themeColor.priamryDarkBg},
         ]}
         onPress={() => {
-          Linking.openURL('https://wishlist-338a1.web.app/about');
+          Linking.openURL('https://wishlist-338a1.web.app/tirepressure/about');
         }}>
         <View style={styles.titleContainer}>
           <View style={styles.iconContainer}>
