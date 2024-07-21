@@ -23,12 +23,23 @@ const App = () => {
   // Signing in Anonymously user
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(async user => {
+      console.log('no user found');
+      console.log(user);
       if (user) {
         await setUserDetail(user);
         setUserLogin(true);
       } else {
-        await setUserDetail(null);
-        setUserLogin(false);
+        // Sign in anonymously if no user is found
+        console.log('No user found, signing in anonymously...');
+        auth()
+          .signInAnonymously()
+          .then(async userCredential => {
+            await setUserDetail(userCredential.user);
+            setUserLogin(true);
+          })
+          .catch(error => {
+            console.error('Error signing in anonymously:', error);
+          });
       }
       if (loading) setLoading(false);
     });
