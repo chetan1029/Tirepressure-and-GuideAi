@@ -1,3 +1,5 @@
+App Store Link: https://apps.apple.com/se/app/tire-pressure-guideai/id6560105284?l=en-GB
+
 # Getting Started
 
 ## Step 1: Start your Application
